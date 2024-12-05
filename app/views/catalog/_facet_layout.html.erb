@@ -1,0 +1,33 @@
+<%= render(Blacklight::FacetFieldComponent.new(facet_field: facet_field_presenter(facet_field, nil))) do |component| %>
+    <% component.label do %>
+      <%= facet_field_label(facet_field.key) %>
+    <% end %>
+  
+    <% component.body do %>
+      <div class="facet">
+        <!-- Existing facet rendering code -->
+        <%= yield %>
+        <% facet_name = facet_field_label(facet_field.key) %> <!-- Get the facet name from the facet field key -->
+        <% if @facets_with_range_filter.include?(facet_name) %>
+          <div class="container" style="margin-top:3px">
+            <div class="row align-items-center range-container">
+              <div class="col-4" style="padding: 0 3px 0 0;">
+                <input type="number" class="form-control" id="<%= facet_name.gsub(' ', '_') %>_start_year" name="<%= facet_name.gsub(' ', '_') %>_start_year" placeholder="Start" />
+              </div>
+              <div class="col-4" style="padding: 0">
+                <input type="number" class="form-control" id="<%= facet_name.gsub(' ', '_') %>_end_year" name="<%= facet_name.gsub(' ', '_') %>_end_year" placeholder="End" />
+              </div>
+              <div class="col-2" style="padding-left: 2px">
+                <button data-facet="<%= facet_name.gsub(' ', '_') %>" class="apply-range-filter btn btn-primary">Apply</button>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+  
+  
+ 
+
+  

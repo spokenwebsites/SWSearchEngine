@@ -1,0 +1,245 @@
+
+
+<%= render(
+      Blacklight::DocumentMetadataComponent.new(
+        fields: document_presenter(document).field_presenters,
+        show: true
+      )
+    )
+%>
+
+<% def print_key_value_pair(key, value) %>
+  <% if value.present? %>
+    <div class="row">
+    <dt class="blacklight-<%= key %> col-md-3"><%= key.capitalize %>:</dt>
+    <dd class="col-md-9 blacklight-<%= key %>"><%= value.empty? ? "NA" : value %></dd>
+    </div>
+  <% end %>
+<% end %>
+
+<% def print_key_value_pair_textArea(key, value) %>
+  <% if value.present? %>
+    <div class="row">
+      <dt class="blacklight-<%= key %> col-md-3"><%= key.capitalize %>:</dt>
+
+      <dd class="col-md-9 blacklight-<%= key %>">
+        <pre><span></span><br></pre>
+        <textarea>
+        <%= value.empty? ? "NA" : value %>
+         </textarea>
+
+        </dd>
+
+    </div>
+  <% end %>
+<% end %>
+
+<% def print_key_value_pair_url(key, value) %>
+  <% if value.present? %>
+    <div class="row">
+    <% if key == "url" %>
+      <dt class="blacklight-<%= key %> col-md-3"><%= key.capitalize %>:</dt>
+      <dd class="col-md-9 blacklight-<%= key %>"><a href="<%= value %>" target="_blank"><%= value %></a></dd>
+    <% else %>
+      <dt class="blacklight-<%= key %> col-md-3"><%= key.capitalize %>:</dt>
+      <dd class="col-md-9 blacklight-<%= key %>"><%= value %></dd>
+    <% end %>
+    </div>
+  <% end %>
+<% end %>
+<div class="accordion" id="accordionExample">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h2 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="outline: none">
+          Related Works
+        </button>
+      </h2>
+    </div>
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div class="card-body">
+        <% JSON.parse(@document.related_works).each do |related_work| %>
+          <% print_key_value_pair_url("url", related_work["url"]) %>
+          <% print_key_value_pair("citation", related_work["citation"]) %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="outline: none !important;">
+          Material Description
+        </button>
+      </h2>
+    </div>
+
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+      <div class="card-body">
+        <% JSON.parse(@document.material_description).each do |materials_description| %>
+          <% print_key_value_pair("side", materials_description["side"]) %>
+          <% print_key_value_pair("extent", materials_description["extent"]) %>
+          <% print_key_value_pair("AV Type", materials_description["AV_type"]) %>
+          <% print_key_value_pair("generations", materials_description["generations"]) %>
+          <% print_key_value_pair("Conservation", materials_description["Conservation"]) %>
+          <% print_key_value_pair("equalization", materials_description["equalization"]) %>
+          <% print_key_value_pair("playback Mode", materials_description["playback_mode"]) %>
+          <% print_key_value_pair("playing Speed", materials_description["playing_speed"]) %>
+          <% print_key_value_pair("sound Quality", materials_description["sound_quality"]) %>
+          <% print_key_value_pair("recording Type", materials_description["Conservation"]) %>
+          <% print_key_value_pair("storage Capacity", materials_description["storage_capacity"]) %>
+          <% print_key_value_pair("physical Condition", materials_description["physical_condition"]) %>
+          <% print_key_value_pair("Track Configuration", materials_description["track_configuration"]) %>
+          <% print_key_value_pair("Material Designation", materials_description["material_designations"]) %>
+          <% print_key_value_pair("Physical Composition", materials_description["physical_compositions"]) %>
+          <% print_key_value_pair("Accompanying Material", materials_description["accompanying_material"]) %>
+          <% print_key_value_pair("Other Physical Description", materials_description["other_physical_description"]) %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="card">
+  <div class="card-header" id="headingFour">
+    <h2 class="mb-0">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style="outline: none !important;">
+        Digital Description
+      </button>
+    </h2>
+  </div>
+
+  <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+    <div class="card-body">
+      <% JSON.parse(@document.digital_description).each do |digital_description| %>
+        <% print_key_value_pair("file URL", digital_description["file_url"]) %>
+        <% print_key_value_pair("file Path", digital_description["file_path"]) %>
+        <% print_key_value_pair("filename", digital_description["filename"]) %>
+        <% print_key_value_pair("channel Field", digital_description["channel_field"]) %>
+        <% print_key_value_pair("sample Rate", digital_description["sample_rate"]) %>
+        <% print_key_value_pair("duration", digital_description["duration"]) %>
+        <% print_key_value_pair("precision", digital_description["precision"]) %>
+        <% print_key_value_pair("size", digital_description["size"]) %>
+        <% print_key_value_pair("bitrate", digital_description["bitrate"]) %>
+        <% print_key_value_pair("encoding", digital_description["encoding"]) %>
+
+
+        <% print_key_value_pair("contents", digital_description["contents"]) %>
+
+        <% print_key_value_pair("notes", digital_description["notes"]) %>
+        <% print_key_value_pair("title", digital_description["title"]) %>
+        <% print_key_value_pair("credit", digital_description["credit"]) %>
+        <% print_key_value_pair("caption", digital_description["caption"]) %>
+        <% print_key_value_pair("content_type", digital_description["content_type"]) %>
+        <% print_key_value_pair("featured", digital_description["featured"]) %>
+      <% end %>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+         Location
+        </button>
+      </h2>
+    </div>
+
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+      <div class="card-body">
+        <% JSON.parse(@document.location).each do |location| %>
+          <% print_key_value_pair("address", location["address"]) %>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    const cardBody = document.querySelector('#collapseFour .card-body');
+    cardBody.innerHTML = cardBody.innerHTML.replace(/\n/g, '<br>');
+    function makeExpandingArea(container) {
+        var area = container.querySelector('textarea');
+        var span = container.querySelector('span');
+        if (area.addEventListener) {
+            area.addEventListener('input', function() {
+                span.textContent = area.value;
+            }, false);
+            span.textContent = area.value;
+        } else if (area.attachEvent) {
+            // IE8 compatibility
+            area.attachEvent('onpropertychange', function() {
+                span.innerText = area.value;
+            });
+            span.innerText = area.value;
+        }
+// Enable extra CSS
+        container.className += "active";
+    }var areas = document.querySelectorAll('.expandingArea');
+    var l = areas.length;while (l--) {
+        makeExpandingArea(areas[l]);
+    }
+</script>
+<style>
+    textarea,
+    pre {
+        margin: 0;
+        padding: 0;
+        outline: 0;
+        border: 0;
+    }
+    .expandingArea {
+        position: relative;
+        border: 1px solid #888;
+        background: #fff;
+    }
+    .expandingArea > textarea,
+    .expandingArea > pre {
+        padding: 5px;
+        background: transparent;
+        font: 400 13px/16px helvetica, arial, sans-serif;
+        /* Make the text soft-wrap */
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+    .expandingArea > textarea {
+        /* The border-box box model is used to allow
+         * padding whilst still keeping the overall width
+         * at exactly that of the containing element.
+         */
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+        width: 100%;
+        /* This height is used when JS is disabled */
+        height: 100px;
+    }
+    .expandingArea.active > textarea {
+        /* Hide any scrollbars */
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        /* Remove WebKit user-resize widget */
+        resize: none;
+    }
+    .expandingArea > pre {
+        display: none;
+    }
+    .expandingArea.active > pre {
+        display: block;
+        /* Hide the text; just using it for sizing */
+        visibility: hidden;
+    }
+</style>

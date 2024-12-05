@@ -1,0 +1,23 @@
+<div class="MainPage">
+
+  <p class="Title-spokenweb">
+    SpokenWeb: Literary Events in <br>
+    Canada
+  </p>
+
+  <p class="Title-Description">
+    This site offers data from public and archival sources that document reading <br>
+    events and other activities held in Canada from 1950 to the present.
+  </p>
+<!--  <img src="/images/AudioVideo.png" alt="Spoken Web">-->
+  <%= image_tag 'AudioVideo.png', alt: 'My Image', class: 'imgSpokenWeb' %>
+</div>
+
+
+<script>
+    Blacklight.onLoad(function() {
+        $('#about .card-header').one('click', function() {
+            $($(this).data('target')).load($(this).find('a').attr('href'));
+        });
+    });
+</script>

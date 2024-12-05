@@ -1,0 +1,73 @@
+<style>
+
+    .source_collection {
+        width: calc(33.33% - 20px); /* Adjust the width and spacing as needed */
+        height: auto; /* Adjust the height as needed */
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-bottom: 20px; /* Adjust the spacing between cards */
+    }
+
+    .card-image {
+        width: 100%;
+        height: 0;
+        padding-bottom: 70%; /* Adjust the padding-bottom value to control the image aspect ratio */
+        position: relative;
+    }
+
+    .card-image img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+    .collection_content {
+
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0;
+        text-align: center;
+    }
+
+    .card-description {
+        margin-top: 10px;
+        text-align: center;
+    }
+    .collection_container{
+      margin-top: 70px;
+        margin-left: 100px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+    }
+</style>
+<div class="card-container collection_container">
+  <% HomeHelper.get_facets.each_slice(2) do |collection_label, facet_count| %>
+    <a class="card source_collection" href="<%= search_catalog_path(f: { source_collection_label: [collection_label] }) %>">
+<!--    <a href="/search?source_collection_label=<%#= URI.encode_www_form_component(collection_label) %>">-->
+      <%#= render_field_row_search_link  collection_label, "source_collection_label" %>
+    <div class="card-image">
+        <%= image_tag 'AudioVideo.png', alt: 'My Image', class: 'imgSpokenWeb' %>
+      </div>
+      <div class="card-content collection_content">
+        <h3 class="card-title"><%= collection_label %></h3>
+        <p class="card-description">( <%= facet_count %> )</p>
+      </div>
+    </a>
+  <% end %>
+</div>
+
+

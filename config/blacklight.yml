@@ -1,0 +1,10 @@
+load_defaults: 8.0.0
+development:
+  adapter: solr
+  url: <%= ENV['SOLR_URL'] || "http://spokenweb_solr:8983/solr/swallow2" %>
+test: &test
+  adapter: solr
+  url: <%= ENV['SOLR_URL'] || "http://spokenweb_solr:8983/solr/swallow2" %>
+production:
+  adapter: solr
+  url: <%= ENV['SOLR_URL'] || "https://[SOLR_USERNAME]:[SOLR_PASSWORD]@[SOLR_CORE_URL]" %> #SOLR_CORE_URL for eg: spokenweb-solr.koumbit.net:8983/solr/swallow2

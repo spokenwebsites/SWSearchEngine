@@ -1,0 +1,324 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ 
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+.bg-dark {
+    background-color: #4B4B4B !important;
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 110%;
+    /* identical to box height, or 20px 
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+
+
+    color: #FFFFFF;
+}
+
+.btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+.Title-spokenweb{
+	
+    position:relative;
+    width: 727px;
+    height: 88px;
+    left: 100px;
+    top: 16px;
+
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 110%;
+    /* or 44px 
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+
+    text-align: center;
+    letter-spacing: -0.02em;
+
+    color: #000000;
+}
+.facets-heading{
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;	   
+    font-style: normal;
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 110%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #000000;
+}
+.Title-Description{
+  	position: relative;
+    width: 708px;
+    height: 46px;
+
+    
+
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 130%;
+    left: 100px;
+
+    text-align: center;
+
+    color: #000000;
+}
+.imgSpokenWeb{
+    position: absolute;
+    width: 698px;
+    height: 504px;
+     left: 100px;
+    top: 200px;
+
+}
+.MainPage{
+    left:100px
+}
+.navbar-dark .navbar-nav .nav-link {
+ color:white;
+}
+
+
+
+
+.btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.navbar-toggler {
+    margin-left: 225px;
+}
+
+/*.facet-limit{
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*    box-sizing: border-box;
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*    position: absolute;
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*    width: 287px;
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*    height: 47px;
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*    left: 10px;
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*    !*top: 115px;*!
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*    background: #FFFFFF;
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*    border: 2px solid #000000;
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*    border-radius: 23.5px;
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*}
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+h1{
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 110%;
+    /* or 35px 
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+
+    letter-spacing: -0.02em;
+
+    color: #000000;
+}
+.separator_head{
+
+
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 110%;
+    text-decoration-line: underline;
+    color: #000000;
+}
+.subheading{
+
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 110%;
+    color: #868686;
+}
+.subheading_values{
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 110%;
+    color: #000000;
+}
+.preserve_line_break{
+	white-space: pre-line;
+}
+.solid-line{
+    border: 1px solid #757575;
+}
+.facet-limit,.facet-limit-active{
+        box-sizing: border-box;
+
+
+        /*top: 115px;
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+        background:#FFFFFF;
+        border: 2px solid #000000;
+        border-radius: 23.5px;
+}
+.facet-limit-active{
+    border-color:#9C4F3E !important;
+}
+/*.blacklight-item_genre{
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*    top: 175px;
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*}
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+
+/*.blacklight-source_collection_label{
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*    top: 235px;
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+/*}
+ *
+ * Used by blacklight_range_limit
+ *= require  'blacklight_range_limit'
+ *
+*/
+
+
+.search-field,.advanced, .card, .btn, .input-group, .row{
+font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+}
+#facets{
+font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+}
+

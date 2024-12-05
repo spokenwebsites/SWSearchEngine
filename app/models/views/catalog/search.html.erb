@@ -1,0 +1,9 @@
+<h1>Advanced Search</h1>
+<%= form_tag advanced_search_path, method: :get do %>
+  <% @search_fields.each do |field| %>
+    <%= label_tag "search_field_#{field[0]}", field[1] %>
+    <%= select_tag "search_field_#{field[0]}", options_for_select(field[2], selected: params["search_field_#{field[0]}"]) %>
+    <%= text_field_tag "search_field_#{field[0]}", params["search_field_#{field[0]}"] %>
+  <% end %>
+  <%= submit_tag "Search", class: "btn btn-primary" %>
+<% end %>

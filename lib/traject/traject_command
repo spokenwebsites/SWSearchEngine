@@ -1,0 +1,4 @@
+traject -i xml -c /Users/varshinivankayalapati/Desktop/Projects/new/swallow_frontend/lib/traject/config.rb /Users/varshinivankayalapati/Desktop/Projects/new/swallow_frontend/lib/traject/xml/combined.xml
+traject -i xml -c /Users/shreyasavant/Desktop/swallow_frontend-main/lib/traject/config.rb /Users/shreyasavant/Downloads/abc.xml
+
+# Use the relative paths from the containers for the location of the XML file and the config.rb file

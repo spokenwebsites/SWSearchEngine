@@ -1,0 +1,330 @@
+
+.custom-nav-logo {
+    position: relative !important;
+    display: inline-block !important;
+}
+
+.btn {
+    padding: 6px 11px !important;
+    border-radius: 4px !important;
+
+}
+.btn.btn-primary{
+    color: #fff !important;
+    background-color: #9C4F3E !important;
+    border-color: #9C4F3E !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #9C4F3E !important;
+    color: white !important;
+}
+
+.btn-outline-primary
+{
+    border-color: #9C4F3E !important;
+
+}
+
+.btn-secondary{
+    border-color: #9C4F3E !important;
+}
+
+.clear-bookmarks {
+    color: white !important;
+}
+
+#search_field {
+    background: #DCDCDC;
+    border: 1px solid #C4C4C4;
+}
+#q {
+    background-color: white !important;
+}
+
+.container .advanced_search {
+    background: #9C4F3E;
+    /*font-family: Futura;*/
+    /*font-size: 14px;*/
+    /*font-weight: 400;*/
+    /*line-height: 17.95px;*/
+    /*text-align: left;*/
+}
+
+#search {
+    background: #9C4F3E;
+    border: 0px solid #9C4F3E;
+}
+
+.homepage-heading {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 46.15px;
+    text-align: left;
+    color:#4B4B4B;
+
+}
+
+.homepage-subheading {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 450;
+    line-height: 30.77px;
+    text-align: left;
+    color: #9C4F3E;
+}
+
+.homepage-description {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20.51px;
+    text-align: left;
+
+}
+
+.container.homepage {
+    margin: 51px 35px 30px 54px;
+}
+
+.homepage-description {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20.51px;
+    text-align: left;
+}
+
+
+
+.card-image {
+    width: 100%;
+    height: 0;
+    padding-bottom: 70%; /* Adjust the padding-bottom value to control the image aspect ratio */
+    position: relative;
+}
+
+.card-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.collection_content {
+
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+}
+
+.card-description {
+    margin-top: 10px;
+    text-align: center;
+}
+
+
+.card.facet-limit {
+    border: 1px solid #CFCFCF ;
+    border-radius: 20px;
+}
+
+/*.card.facet-limit.blacklight-partnerInstitution {*/
+/*    background-color: white;*/
+/*}*/
+
+/*.card.facet-limit.blacklight-partnerInstitution {*/
+/*    background-color: #FFFFFF !important;*/
+/*}*/
+
+
+.card-header.facet-field-heading{
+    border-radius: 20px 20px 20px 20px;
+    background-color: white;
+}
+
+/*.facet-limit-active .card-header {*/
+/*    background-color:  #9C4F3E !important;*/
+/*    border-radius-top: 30px;*/
+/*    border-radius: 20px 20px 0px 0px !important;*/
+/*}*/
+
+
+
+
+
+/*.facet-limit-active button {*/
+/*    color: white;*/
+
+/*}*/
+
+/*!*make the border match the text color*!*/
+/*!*fix the creator links*!*/
+/*.text-success, .facet-values li .selected {*/
+/*    color: #9C4F3E !important;*/
+/*    border: 1px solid #9C4F3E !important;*/
+/*    border-color: #9C4F3E !important;*/
+/*}*/
+
+
+.facet-limit-active button,  facet-limit-active button:hover {
+    color: #FFFFFF !important;
+}
+
+.facet-limit > button {
+    padding: 0.745rem 0.75rem !important;
+}
+
+
+
+
+.facet-limit-active .card-header {
+    background-color:  #9C4F3E !important;
+    border-radius: 20px 20px 0 0 !important;
+}
+
+.facet-limit-active {
+    border: 1px solid #9C4F3E !important;
+    /*border-color: #9C4F3E !important;*/
+}
+
+.text-success, .facet-values li .selected {
+    color: #9C4F3E !important;
+}
+
+.index_title.document-title-heading a{
+    color: #9C4F3E !important;
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 450;
+    line-height: 25.64px;
+    text-align: left;
+}
+
+.blacklight-creator_names a{
+    color: #9C4F3E !important;
+
+}
+
+.document-metadata {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17.95px;
+    text-align: left;
+
+}
+
+a, .advanced-search-start-over {
+    color: #9C4F3E !important;
+
+}
+
+.advanced_search {
+    background-color: #9C4F3E !important;
+    color: #FFFFFF !important;
+}
+
+.nav-link {
+    color: #FFFFFF !important;
+}
+
+#sortAndPerPage .btn-outline-primary, .pagination .btn-outline-primary:hover{
+    border-color: #9C4F3E !important;
+    background-color: #F8F8F8 !important;
+    color: #9C4F3E !important;
+}
+
+.per_page-dropdown .dropdown-toggle{
+    background-color: #F8F8F8 !important;
+
+}
+
+.separator_head {
+    color: #9C4F3E !important;
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 450 !important;
+    line-height: 20.51px !important;
+    text-align: left !important;
+}
+
+.subheading.col-md-3 {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 17.95px !important;
+    text-align: left !important;
+    color: #868686 !important;
+}
+
+.col-md-9.subheading_values {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 17.95px !important;
+    text-align: left !important;
+}
+
+
+.source_collection {
+    width: calc(33.33% - 20px) !important; /* For larger screens */
+    height: auto;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: "Futura";
+    margin-bottom: 20px; /* Spacing between cards */
+    transition: all 0.3s ease; /* Smooth transition when resizing */
+}
+
+.collection_container {
+    margin-top: 55px !important;
+    margin-left: 100px !important;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .collection_container {
+        margin-left: 20px !important; /* Reduce left margin for smaller screens */
+        margin-right: 20px !important;
+        justify-content: space-around !important; /* Adjust spacing for medium screens */
+    }
+
+    .source_collection {
+        width: calc(50% - 20px) !important; /* Adjust card width for tablets */
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .collection_container {
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+        justify-content: center !important; /* Center the cards on small screens */
+    }
+
+    .source_collection {
+        width: 100% !important; /* Full width for mobile devices */
+        margin-bottom: 15px !important;
+    }
+}
+
+
+

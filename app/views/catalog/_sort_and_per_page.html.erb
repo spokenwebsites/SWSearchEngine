@@ -1,0 +1,10 @@
+<div id="sortAndPerPage" class="sort-pagination d-md-flex justify-content-between" role="navigation" aria-label="<%= t('blacklight.search.per_page.aria_label') %>">
+  <%= render partial: "paginate_compact", object: @response if show_pagination? %>
+
+  <% customParameters = params.to_unsafe_h.slice(:f, :range, :q) %>
+  <% if customParameters.present? %>
+    <%= link_to 'Download as JSON', download_search_json_download_index_url(customParameters), class: 'btn btn-outline-primary' %>
+  <% end %>
+
+  <%= render_results_collection_tools wrapping_class: "search-widgets" %>
+</div>

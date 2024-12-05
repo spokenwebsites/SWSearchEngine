@@ -1,0 +1,128 @@
+
+<div class="card show-tools">
+  <div class="card-header">
+    <h2 class="mb-0 h6"><%= t('blacklight.tools.Tools') %></h2>
+  </div>
+
+  <ul class="list-group list-group-flush">
+
+    <li class="list-group-item download-option">
+        <a href='#' id="download-link-json"> Download as JSON </a>
+    </li>
+    <li class="list-group-item download-option">
+      <a href='#' id = "download-link-text"> Download as Text </a>
+    </li>
+  </ul>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+
+        var combinedData = {
+            "Classification": {
+                "partner_institution": <%= raw @document.partnerInstitution.to_json %>,
+                "source_collection_label":<%= raw @document.source_collection_label.to_json %>,
+                "series":<%= raw @document.item_series_title.to_json %>,
+                "sub_series":<%= raw @document.item_subseries_title.to_json %>,
+            },
+            "item_description": {
+                "title":<%= raw @document.item_title.to_json %>,
+                "title_source":<%= raw @document.item_title_source.to_json %>,
+                "title_note":<%= raw @document.item_title_note.to_json %>,
+                "language":<%= raw @document.item_language.to_json %>,
+                "production_context":<%= raw @document.item_production_context.to_json %>,
+                "genre":<%= raw @document.item_genre.to_json %>,
+                "persistent_url":<%= raw @document.persistent_url.to_json %>,
+
+                "Identifiers":<%= raw @document.item_identifiers.to_json %>,
+            },
+            "rights": {
+                "rights":<%= raw @document.rights.to_json %>,
+                "license":<%= raw @document.rights_license.to_json %>,
+                "notes":<%= raw @document.rights_notes.to_json %>,
+            },
+
+            "creators": <%= raw @document.creators.to_json %>,
+            "contributors": <%= raw @document.contributors.to_json %>,
+            "material_description": <%= raw @document.material_description.to_json %>,
+            "digital_file_description": <%= raw @document.digital_description.to_json %>,
+            "Dates": <%= raw @document.dates.to_json %>,
+            "location": <%= raw @document.location.to_json %>,
+            "content": <%= raw @document.contents.to_json %>,
+            "notes": <%= raw @document.notes.to_json %>,
+            "related_works": <%= raw @document.related_works.to_json %>,
+
+        };
+
+        var textData = 'Classification: ' +
+            '\nPartner Institution<%= raw @document.partnerInstitution.to_json %>' +
+            '\nSource Collection Label: ' +
+            '<%= raw @document.source_collection_label.to_json %>' +
+            '\nSeries: ' +
+            '<%= raw @document.item_series_title.to_json %>' +
+            '\nSub Series: ' +
+            '<%= raw @document.item_series_title.to_json %>' +
+            '\n--------------------------------- ' +
+            '\nItem Description: ' +
+            '\nTitle:<%= raw @document.item_title.to_json %>' +
+            '\nTitle Source:<%= raw @document.item_title_source.to_json %>' +
+            <!--        '\nTitle Note:<%= raw @document.item_title_note.to_json %>' +-->
+            '\nLanguage:<%= raw @document.item_language.to_json %>' +
+            '\nProduction Context:<%= raw @document.item_production_context.to_json %>' +
+            '\nGenre:<%= raw @document.item_genre.to_json %>' +
+            '\nPersistent URL:<%= raw @document.persistent_url.to_json %>' +
+            '\n--------------------------------- ' +
+            '\nRights: ' +
+            '\nRights:<%= raw @document.rights.to_json %>' +
+            '\nLicense:<%= raw @document.rights.to_json %>' +
+            <!--                '\nNotes:<%= raw @document.rights_notes.to_json %>' +-->
+            '\n--------------------------------- '
+        ;
+            var content = '';
+
+        $('#download-link-text').click(function() {
+            var blob = new Blob([textData], { type: 'text/plain' });
+
+            // Generate a unique download URL
+            var url = URL.createObjectURL(blob);
+
+            // Create a download link
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = <%= raw @document.item_title.to_json %> + 'txt';
+
+            // Trigger the download
+            link.click();
+
+            // Clean up the URL and link
+            URL.revokeObjectURL(url);
+            link.remove();
+        });
+        $('#download-link-json').click(function() {
+            content = JSON.stringify(combinedData);
+            var blob = new Blob([content], { type: 'application/json' });
+
+            // Generate a unique download URL
+            var url = URL.createObjectURL(blob);
+
+            // Create a download link
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = <%= raw @document.item_title.to_json %> + 'json';
+
+            // Trigger the download
+            link.click();
+
+            // Clean up the URL and link
+            URL.revokeObjectURL(url);
+            link.remove();
+        });
+
+
+
+
+
+    });
+</script>

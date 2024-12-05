@@ -1,0 +1,32 @@
+<div class="MainPage" >
+  <div class="container homepage">
+    <h1 class="homepage-heading">SpokenWeb Search Engine</h1>
+    <h2 class="homepage-subheading">
+      Collections of Literary Audio and Video Recordings in Canada
+    </h2>
+    <p class="homepage-description">
+      SpokenWeb invites you to discover sound and video recordings that document literary events and activities in Canada.
+      This directory to AV collections is a powerful portal to the study of how sound and performance can shape our understanding of
+      literary history in Canada and beyond. <br> <br>
+      Do you know of or hold a collection of literary audio or video that you can’t find here? If you would like it to be added to
+      the SpokenWeb directory please contact us at <a href="mailto:spokenwebcanada@gmail.com">spokenwebcanada@gmail.com.</a>
+    </p>
+  </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    Blacklight.onLoad(function() {
+        $('#about .card-header').one('click', function() {
+            $($(this).data('target')).load($(this).find('a').attr('href'));
+        });
+    });
+
+
+
+</script>
+
+
+
