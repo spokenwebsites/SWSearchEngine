@@ -84,9 +84,10 @@
 
 }
 
-.container.homepage {
-    margin: 51px 35px 30px 54px;
-}
+/* .container.homepage {
+    padding: 0;
+    margin: 0;
+} */
 
 .homepage-description {
     font-family: Futura, "Trebuchet MS", Arial, sans-serif;
@@ -95,7 +96,6 @@
     line-height: 20.51px;
     text-align: left;
 }
-
 
 
 .card-image {
@@ -112,6 +112,10 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.card-container.collection_container {
+    justify-content: flex-start !important;
 }
 
 
@@ -223,6 +227,22 @@
     text-align: left;
 
 }
+
+
+@media (max-width: 991px) {
+    .navbar-toggler {
+        display: block !important;
+        margin-left: auto !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .navbar-toggler {
+        display: none !important;
+    }
+}
+
+
 
 a, .advanced-search-start-over {
     color: #9C4F3E !important;

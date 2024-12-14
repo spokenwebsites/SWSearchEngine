@@ -25,8 +25,6 @@ RUN gem install bundler -v 2.4.22 && \
 
 COPY . . 
 
-RUN bundle exec rake assets:precompile
-
 EXPOSE 3000
 
 CMD ["rails", "server", "-b", "0.0.0.0"]

@@ -7,6 +7,8 @@
 # Ignore bundler config.
 /.bundle
 
+#Ignore the solr config files
+/swallow2
 
 #Ignore the xml from the dataset in trjaect
 /lib/traject/xml/*
@@ -38,3 +40,5 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 .DS_Store
+.vscode/sftp.json
+Guardfile
