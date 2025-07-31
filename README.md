@@ -1,81 +1,85 @@
-# README
+# 🔎 SpokenWeb Search Engine
 
-# Docker Instructions
+The **SpokenWeb Search Engine** is a tool that enables users to explore metadata and, when available, access audiovisual recordings of Canadian literary events from the 1950s to the present. These materials are cataloged in the **SpokenWeb Swallow Database**, with contributions from organizations and institutions across Canada.
 
-## FINAL DOCKER COMMANDS:
+This search engine serves as a discovery layer for the database, offering an intuitive web interface and search functionality powered by Solr and Blacklight.
 
-# Create a Docker network named 'spokenweb_network'
+---
 
-docker network create spokenweb_network
+## 🧰 Technology Stack
 
+- **Solr** – Backend search engine for indexing and querying metadata
+- **Blacklight** – Ruby on Rails-based frontend for building search interfaces  
+  GitHub: [projectblacklight/blacklight](https://github.com/projectblacklight/blacklight)
+- **Docker** – Containerized environment for local setup and deployment
+- **Traject** – Tool for ingesting metadata into Solr
+- **Python** - For the ETL pipeline
 
-# Run a Solr container named 'spokenweb_solr' with version 9.0.0, exposing port 8983 and pre-creating the core 'swallow2'
+---
 
-docker run -d -p 8983:8983 --network spokenweb_network --name spokenweb_solr solr:9.0.0 solr-precreate swallow2
+## 🚀 Getting Started
 
+### Prerequisites
 
-docker exec my_container rm -rf /var/solr/data/swallow2/conf/
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) (macOS, Windows, or Linux)
 
-# Copy local Solr configuration files to the Solr container
+1. Clone the Repository
 
-docker cp /Users/shreyasavant/Desktop/spokenweb_frontend_latest/my_new_blacklightapp/swallow2/conf spokenweb_solr:/var/solr/data/swallow2/
+`git clone https://github.com/YOUR_ORG/spokenweb-search-engine.git`
 
+2. Configure Setup Script
+Open setup.sh and edit the directory paths to match the location of your project and configuration files on your local machine.
 
-# Restart the Solr container to apply the new configuration
+3. Run the Setup Script
+This will start the Docker containers for Solr and Blacklight, and perform initial configuration.
 
-docker restart spokenweb_solr
+`./setup.sh`
 
+If you encounter permission errors, make sure the script is executable:
 
-# Build a Docker image named 'spokenweb_front' for the frontend
-
-docker build -t spokenweb_front .
-
-
-# Run the frontend container named 'spokenweb_front_cont', link it to the network, and expose port 3000
-
-docker run --network spokenweb_network --name spokenweb_front_cont -p 3000:3000 spokenweb_front
-
-
-# Execute a traject processing command inside the frontend container to process the XML file
-
-docker exec -it spokenweb_front_cont traject -i xml -c /app/lib/traject/config.rb /app/lib/traject/xml/abc.xml
-
-
-# Restart the frontend container to ensure all services are running smoothly
-
-docker restart spokenweb_front_cont
+`chmod +x setup.sh`
 
 
-# Access the Solr admin interface at this URL
+## 🧹 Flushing Solr Records
+To delete all existing documents from Solr:
 
-http://localhost:8983/solr/#/
+- Go to the Solr Admin UI (usually at http://localhost:8983/solr).
+- Navigate to the Core that holds your data.
+- Go to Documents > XML.
+- Paste the following XML into the editor and click Execute:
+
+`<delete><query>*:*</query></delete>`
+
+## 📥 Ingesting New Metadata with Traject
+
+Traject is used to map and load XML metadata into Solr.
+
+`traject -i xml -c path/to/config.rb path/to/dataset.xml`
+
+- `config.rb`: Your Traject configuration file
+- `dataset.xml`: The XML dataset to index
+
+Ensure all file paths are correct and that dependencies are installed if running outside Docker.
 
 
-# Access the frontend application at this URL
+📚 Additional Resources
+- 🔗 [SpokenWeb Project Website](https://spokenweb.ca/)
+- 📘 [Blacklight Documentation](https://projectblacklight.org/)
+- 🔍 [Solr Reference Guide](https://solr.apache.org/guide/)
+- 🛠 [Traject GitHub Repository](https://github.com/traject/traject)
 
-http://localhost:3000/
+### 👥 Contributing
 
+We welcome contributions! To get involved:
 
+1. Fork the repository.
+2. Create a feature branch.
+3. Submit a pull request with a clear explanation of your changes.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### 📝 License
 
-Things you may want to cover:
+This project is licensed under the MIT License unless otherwise stated.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### 📬 Contact
+- For questions or collaboration inquiries, please [reach out here.](https://spokenweb.ca/about-us/get-involved/)
+- For feedback or technical difficulties, fill out [this ticketing form.](https://forms.gle/gFEpqsMuerJ5TLSt5)

@@ -102,6 +102,7 @@ class CatalogController < ApplicationController
 
     config.add_facet_field 'partnerInstitution', label: 'Institution', sort: 'alpha', limit: 10
     config.add_facet_field 'source_collection_label', label: 'Collection', sort: 'alpha', limit: 10
+    config.add_facet_field 'item_series_title', label: 'Series', sort: 'alpha', limit: 10 #latest
     config.add_facet_field 'City', label: 'Location', sort: 'alpha', limit: 10
     config.add_facet_field 'item_production_context', label: 'Production Context', sort: 'alpha', limit: 10
     config.add_facet_field 'item_genre', label: 'Genre', sort: 'alpha', limit: 10
@@ -210,7 +211,7 @@ class CatalogController < ApplicationController
 
     # config.add_search_field 'all_fields', label: 'All Fields'
     config.add_search_field('All Fields') do |field|
-      all_fields = %w[AV_type Address City Dates Interviewer_name Location Note Performance_Date Presenter_name Producer_name Production_Date Publication_Date Reader_name Recordist_name Related_works Series_organizer_name Speaker_name Storyteller Venue _version_ access all_text_timv author_name catalogure_email catalogure_name collection_contributing_unit collection_source_collection collection_source_collection_description collection_source_collection_id content_notes contents contributors contributors_names contributors_names_search creator_names creator_names_search creators dates_overall digital_description format id insitution_collection_item_id item_genre item_identifiers item_language item_production_context item_series_title item_subseries_title item_title item_title_note item_title_source lat lng material_description material_designations partnerInstitution performer_name persistent_url physical_compositions playback_mode recording_type rights rights_license rights_notes source_collection_label timestamp]
+      all_fields = %w[AV_type Address City Dates Interviewer_name Location Note Performance_Date Presenter_name Producer_name Production_Date Publication_Date Reader_name Recordist_name Related_works Series_organizer_name Speaker_name Storyteller Venue _version_ access all_text_timv author_name cataloger_name collection_contributing_unit collection_source_collection collection_source_collection_description collection_source_collection_id content_notes contents contributors contributors_names contributors_names_search creator_names creator_names_search creators dates_overall digital_description format id insitution_collection_item_id item_genre item_identifiers item_language item_production_context item_series_title item_subseries_title item_title item_title_note item_title_source lat lng material_description material_designations partnerInstitution performer_name persistent_url physical_compositions playback_mode recording_type rights rights_license rights_notes source_collection_label timestamp]
       field.solr_parameters = {
         # 'spellcheck.dictionary': 'subject',
         qf: all_fields.join(' '),

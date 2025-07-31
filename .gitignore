@@ -5,40 +5,48 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
-/.bundle
-
-#Ignore the solr config files
-/swallow2
+blacklight_front/.bundle
 
 #Ignore the xml from the dataset in trjaect
-/lib/traject/xml/*
+blacklight_front/lib/traject/xml/*
+blacklight_front/lib/traject/xml/swallow-data-full.xml
+blacklight_front/lib/traject/series_json
 
 # Ignore the default SQLite database.
-/db/*.sqlite3
-/db/*.sqlite3-*
+blacklight_front/db/*.sqlite3
+blacklight_front/db/*.sqlite3-*
 
 # Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
+blacklight_front/log/*
+blacklight_front/tmp/*
 !/log/.keep
 !/tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
-/tmp/pids/*
+blacklight_front/tmp/pids/*
 !/tmp/pids/
 !/tmp/pids/.keep
 
 # Ignore uploaded files in development.
-/storage/*
+blacklight_front/storage/*
 !/storage/.keep
-/tmp/storage/*
+blacklight_front/tmp/storage/*
 !/tmp/storage/
 !/tmp/storage/.keep
 
-/public/assets
+blacklight_front/public/assets
 
 # Ignore master key for decrypting credentials and more.
-/config/master.key
+blacklight_front/config/master.key
 .DS_Store
 .vscode/sftp.json
 Guardfile
+blacklight_front/lib/traject/security.json
+blacklight_front/lib/traject/pass.json
+Rails
+Run
+blacklight_front/app/assets/images/.keep
+sw_etl/data/json.zip
+sw_etl/data/output.zip
+blacklight_front/lib/traject/traject_command
+blacklight_front/lib/traject/config.rb

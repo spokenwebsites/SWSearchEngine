@@ -25,6 +25,21 @@ class SolrDocument
   def partnerInstitution
     self['partnerInstitution'][0]
   end
+
+  # def collection_source_collection_description
+  #   collection_source_collection_description = self['collection_source_collection_description']
+  #   if collection_source_collection_description&.length.to_i > 0  # check if the array exists and has at least one element
+  #     collection_source_collection_description[0]  # return the first element
+  #   else
+  #     nil  # return nil if the array is nil or empty
+  #   end
+  # end
+
+
+  # def collection_source_collection_description
+  #   self['collection_source_collection_description'][0]
+  # end
+
   def source_collection_label
     source_collection_label = self['source_collection_label']
     if source_collection_label&.length.to_i > 0  # check if the array exists and has at least one element
@@ -34,6 +49,17 @@ class SolrDocument
       nil  # return nil if the array is nil or empty
     end
   end
+
+  # def collection_source_collection_description
+  #   collection_source_collection_description = self['collection_source_collection_description']
+  #   if collection_source_collection_description&.length.to_i > 0  # check if the array exists and has at least one element
+
+  #     collection_source_collection_description[0]  # return the first element
+  #   else
+  #     nil  # return nil if the array is nil or empty
+  #   end
+  # end
+
 
   def item_series_title
     item_series_title = self['item_series_title']

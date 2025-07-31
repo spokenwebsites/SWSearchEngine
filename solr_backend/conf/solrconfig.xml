@@ -44,25 +44,76 @@
        -->
         <str name="qf">
           id
-          full_title_tsim
-          short_title_tsim
-          alternative_title_tsim
-          active_fedora_model_ssi
-          title_tsim
-          author_tsim
-          subject_tsim
-          all_text_timv
+cataloger_name
+partnerInstitution
+collection_source_collection
+source_collection_label
+collection_contributing_unit
+collection_source_collection_description
+collection_source_collection_id
+persistent_url
+insitution_collection_item_id
+item_title
+item_title_source
+item_title_note
+item_language
+item_production_context
+item_genre
+item_series_title
+item_subseries_title
+item_identifiers
+rights
+rights_license
+rights_notes
+creator_names
+contributors_names
+creators
+contributors
+performer_name
+author_name
+Presenter_name
+Interviewer_name
+Producer_name
+Recordist_name
+Series_organizer_name
+Reader_name
+Speaker_name
+Storyteller
+Publication_Date
+Production_Date
+material_description
+material_designations
+physical_composition
+recording_type
+AV_type
+playback_mode
+digital_description
+Dates
+Location
+Address
+Venue
+content_notes
+contents
+Note
+Related_works
         </str>
         <str name="pf">
           all_text_timv^10
         </str>
 
        <str name="author_qf">
-          author_tsim
+         creator_names
+        contributors_names
+       </str>
+ 	<str name="related_qf">
+          Related_works
        </str>
        <str name="author_pf">
+	creator_names
+        contributors_names
        </str>
        <str name="title_qf">
+          item_title
           title_tsim
           full_title_tsim
           short_title_tsim
@@ -194,3 +245,4 @@
 
   <requestHandler name="/analysis/field" startup="lazy" class="solr.FieldAnalysisRequestHandler" />
 </config>
+
