@@ -25,7 +25,7 @@ This search engine serves as a discovery layer for the database, offering an int
 
 1. Clone the Repository
 
-`git clone https://github.com/YOUR_ORG/spokenweb-search-engine.git`
+`git clone https://github.com/spokenwebsites/SWSearchEngine.git`
 
 2. Configure Setup Script
 Open setup.sh and edit the directory paths to match the location of your project and configuration files on your local machine.
