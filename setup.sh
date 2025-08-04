@@ -9,13 +9,13 @@ NETWORK_NAME="spokenweb_network"
 SOLR_CONTAINER="spokenweb_solr"
 SOLR_VERSION="9.0.0"
 SOLR_CORE="swallow2"
-SOLR_CONFIG_DIR="solr/conf" # Change to the directory containing Solr configuration files
+SOLR_CONFIG_DIR="solr_backend/conf" # Change to the directory containing Solr configuration files
 FRONT_IMAGE="spokenweb_front"
 FRONT_CONTAINER="spokenweb_front_cont"
 PORT_SOLR=8983
 PORT_FRONT=3000
-TRAJECT_CONFIG="/app/lib/traject/config-item.rb" # Do not Change this directory
-TRAJECT_XML_DATA="/app/lib/traject/xml/swallow-data-full.xml" # Do not Change this directory
+TRAJECT_CONFIG="./blacklight_front/lib/traject/config-item.rb" # Do not Change this directory
+TRAJECT_XML_DATA="./blacklight_front/lib/traject/xml/swallow-data-full.xml" # Do not Change this directory
 
 echo "Creating Docker network..."
 docker network create "$NETWORK_NAME" || echo "Network already exists."
