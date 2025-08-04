@@ -46,7 +46,6 @@ blacklight_front/lib/traject/pass.json
 Rails
 Run
 blacklight_front/app/assets/images/.keep
-sw_etl/data/json.zip
-sw_etl/data/output.zip
+sw_etl/data/
 blacklight_front/lib/traject/traject_command
 blacklight_front/lib/traject/config.rb
