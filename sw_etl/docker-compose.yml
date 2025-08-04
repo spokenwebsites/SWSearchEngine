@@ -1,0 +1,9 @@
+services:
+  spokenweb-python:
+    build: .
+    volumes:
+      - .:/app
+      - ./data:/app/data
+    working_dir: /app
+    command: tail -f /dev/null
+
