@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 
@@ -17,6 +18,9 @@ data = [
     {"label": "University of Ottawa", "id": 169}
 ]
 
+os.makedirs('./data/json', exist_ok=True)
+os.makedirs('./data/output', exist_ok=True)
+
 #iterate through the data and make a request for each item
 for item in data:
     #make a request to the API
@@ -24,6 +28,6 @@ for item in data:
     #parse the JSON response
     json_response = response.json()
     #save the JSON response to a file using item.label as name
-    with open("/results/json/" + item["label"] + ".json", "w") as file:
+    with open("./data/json/" + item["label"] + ".json", "w") as file:
         json.dump(json_response, file)
 
