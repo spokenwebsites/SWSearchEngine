@@ -2,6 +2,7 @@ import os
 import json
 import dicttoxml
 
+print('serializing data.')
 
 def combine_json_files(input_folder, output_file):
     combined_data = []
@@ -56,4 +57,4 @@ json_files_data = read_json_files(input_folder)
 output_file_path_XML = './data/output/swallow-data-full.xml'
 merge_json_to_xml(json_files_data, output_file_path_XML)
 
-    
+print('done serializing.')    

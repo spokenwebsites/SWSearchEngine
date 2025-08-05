@@ -21,6 +21,8 @@ data = [
 os.makedirs('./data/json', exist_ok=True)
 os.makedirs('./data/output', exist_ok=True)
 
+print('Retrieving data...')
+
 #iterate through the data and make a request for each item
 for item in data:
     #make a request to the API
@@ -31,3 +33,4 @@ for item in data:
     with open("./data/json/" + item["label"] + ".json", "w") as file:
         json.dump(json_response, file)
 
+print('json data has been retrieved.')
