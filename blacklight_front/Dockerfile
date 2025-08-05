@@ -9,11 +9,10 @@ RUN apt-get update && \
         git \
         mime-support \
         tzdata \
-        curl  
+        curl && \  
+        npm install -g yarn
 
-RUN npm install -g yarn
-
-WORKDIR /app
+WORKDIR /sw-rails
 
 COPY Gemfile Gemfile.lock ./
 
@@ -23,11 +22,9 @@ RUN gem install bundler -v 2.4.22 && \
     bundle config set --local without '' && \
     bundle install
 
-RUN rm -f app/tmp/pids/server.pid
+RUN rm -f ./app/tmp/pids/server.pid
 
 COPY . . 
-
-RUN ls -la ./
 
 # Make sure binstubs exist and are executable (generate if missing)
 RUN bundle exec rake app:update:bin
@@ -35,4 +32,5 @@ RUN bundle exec rake app:update:bin
 EXPOSE 3000
 
 # Use bundle exec rails server with --trace to get error backtraces instead of help docs
-CMD rm -f tmp/pids/server.pid && rails server -b 0.0.0.0
+# CMD ["bash", "-c", "rm -f tmp/pids/server.pid && exec rails server -b 0.0.0.0"]
+CMD [ "rails", "server", "-b", "0.0.0.0" ]

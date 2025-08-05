@@ -18,4 +18,6 @@ WORKDIR /app
 
 COPY serializer.py /app/serializer.py
 COPY retriever.py /app/retriever.py
+COPY run-flow.sh /app/run-flow.sh
 
+CMD ["bash", "/app/run-flow.sh"]
