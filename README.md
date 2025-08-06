@@ -39,6 +39,17 @@ If you encounter permission errors, make sure the script is executable:
 
 `chmod +x setup.sh`
 
+### Execute ETL
+
+ETL is executed everytime you run `./setup.sh`. ETL components can also be ran individually.
+
+#### Running python script `retriever.py` and `serializer.py`
+This will make sure you have the latest data stored locally.
+`docker compose run --rm etl-ptyhon`
+
+#### Running Traject
+This will inject data into Solr. For the following command to run properly, make sure the Solr container is running and healthy.
+`docker compose run --rm etl-traject`
 
 ## 🧹 Flushing Solr Records
 To delete all existing documents from Solr:
