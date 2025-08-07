@@ -15,12 +15,15 @@ SOLR_CONFIG_DIR="solr_backend/conf" # Change to the directory containing Solr co
 PORT_SOLR=8983
 PORT_FRONT=3000
 
+
+# Comment this block if you are running for the first time
+# ------------------------------------------------------------
 echo "Cleaning previous containers, images and network..."
 docker compose down
 docker rm -f "$SOLR_CONTAINER" 2>/dev/null || true  
 docker network rm "$NETWORK_NAME" #2>/dev/null || true  
 docker rmi -f "solr" 2>/dev/null || true
-
+# ------------------------------------------------------------
 
 echo "Creating Docker network..."
 docker network create "$NETWORK_NAME" || echo "Network already exists."

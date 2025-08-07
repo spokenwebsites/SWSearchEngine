@@ -12,15 +12,22 @@ blacklight_front/lib/traject/xml/*
 blacklight_front/lib/traject/xml/swallow-data-full.xml
 blacklight_front/lib/traject/series_json
 
-# Ignore the default SQLite database.
 blacklight_front/db/*.sqlite3
 blacklight_front/db/*.sqlite3-*
 
-# Ignore all logfiles and tempfiles.
 blacklight_front/log/*
-blacklight_front/tmp/*
-!/log/.keep
-!/tmp/.keep
+/blacklight_front/tmp/cache/B47/CE0/*
+/blacklight_front/tmp/cache/bootsnap/compile-cache-iseq/*
+/blacklight_front/tmp/cache/bootsnap/compile-cache-yaml/*
+/blacklight_front/tmp/cache/assets/*
+/blacklight_front/tmp/development_secret.txt
+
+!/blacklight_front/tmp/cache/B47/CE0/.keep
+!/blacklight_front/tmp/cache/bootsnap/compile-cache-iseq/.keep
+!/blacklight_front/tmp/cache/bootsnap/compile-cache-yaml/.keep
+!/blacklight_front/tmp/cache/assets/.keep
+!/blacklight_front/tmp/.keep
+!/blacklight_front/log/.keep
 
 # Ignore pidfiles, but keep the directory.
 blacklight_front/tmp/pids/*
@@ -34,7 +41,14 @@ blacklight_front/tmp/storage/*
 !/tmp/storage/
 !/tmp/storage/.keep
 
-blacklight_front/public/assets
+blacklight_front/public/assets/*
+
+!blacklight_front/public/assets/blacklight/
+!blacklight_front/public/assets/controllers/
+
+!blacklight_front/public/assets/blacklight/.keep
+!blacklight_front/public/assets/controllers/.keep
+
 
 # Ignore master key for decrypting credentials and more.
 blacklight_front/config/master.key
