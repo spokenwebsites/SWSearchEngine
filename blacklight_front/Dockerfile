@@ -41,4 +41,6 @@ RUN bundle exec rails db:create
 
 RUN bundle exec rails db:migrate
 
-CMD ["rails", "server", "-b", "0.0.0.0"] 
+RUN bundle exec rake app:update:bin
+
+CMD ["bin/rails", "server", "-b", "0.0.0.0"] 
