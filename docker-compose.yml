@@ -11,6 +11,7 @@ services:
       context: ./sw_etl/traject
       dockerfile: ./Dockerfile
     working_dir: /traject
+    env_file: ./sw_etl/.env.development
     volumes:
       - ./sw_etl/traject/data:/data    
   blacklight:

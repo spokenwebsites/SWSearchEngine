@@ -1,18 +1,17 @@
+# frozen_string_literal: true
+
 # configuration_file.rb
 
 require 'httpclient'
 require_relative './date_normalizer'
 
+puts "SOLR_URL=#{ENV['SOLR_URL']}"
+
 settings do
-  ######
-  # ATENTION
-  # Connections to the Live Solr Core present
-  ######
-
-  # Where to find solr server to write to
-  # provide "solr.url", "https://traject:XXXXXX@spokenweb-solr.koumbit.net:8983/solr/swallow2/" #live server
-
-  provide 'solr.url', 'http://spokenweb_solr:8983/solr/swallow2/' # docker server
+  # uses .env.development by default (cf. docker-compose.yml).
+  # create/update .env.production file to connect to live server instead.
+  # defaults to local url if not .env.xxx files are found.
+  provide 'solr.url', ENV.fetch('SOLR_URL', 'http://spokenweb_solr:8983/solr/swallow2/')
 
   # default source type is binary, traject can't guess
   # you have to tell it.
