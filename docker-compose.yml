@@ -1,4 +1,13 @@
 services:
+  solr:
+    build:
+      context: ./solr_backend
+      dockerfile: ./Dockerfile
+    ports:
+      - 8983:8983
+    post_start:
+      - command: ["solr", "create_core", "-c", "swallow2", "-d", "/custom-conf/" ]
+      
   etl-python:
     build:
       context: ./sw_etl
@@ -6,24 +15,24 @@ services:
     volumes:
       - ./sw_etl/traject/data:/app/data
     working_dir: /app
+
   etl-traject:
     build:
       context: ./sw_etl/traject
       dockerfile: ./Dockerfile
     working_dir: /traject
     env_file: ./sw_etl/.env.development
+    depends_on:
+      - solr
+      - etl-python
     volumes:
       - ./sw_etl/traject/data:/data    
+      
   blacklight:
     build:
       context: ./blacklight_front
       dockerfile: ./Dockerfile
     depends_on:
-      - etl-python
       - etl-traject
     ports:
       - 3000:3000
-networks:
-  default:
-    external: true
-    name: spokenweb_network
