@@ -60,7 +60,7 @@ blacklight_front/lib/traject/pass.json
 Rails
 Run
 blacklight_front/app/assets/images/.keep
-sw_etl/traject/data/
+# sw_etl/traject/data/
 blacklight_front/lib/traject/traject_command
 blacklight_front/lib/traject/config.
 
