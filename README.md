@@ -23,33 +23,66 @@ This search engine serves as a discovery layer for the database, offering an int
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) (macOS, Windows, or Linux)
 
+### Installation
+
 1. Clone the Repository
 
 `git clone https://github.com/spokenwebsites/SWSearchEngine.git`
 
-2. Configure Setup Script
-Open setup.sh and edit the directory paths to match the location of your project and configuration files on your local machine.
+2. Download latest version of the dataset (optional)
+For the setup to work, you will need to have some version of the data stored locally.
+To manually download the latest version of the data run:
 
-3. Run the Setup Script
-This will start the Docker containers for Solr and Blacklight, and perform initial configuration.
+```sh
+docker compose run --rm etl ./fetch.sh
+```
 
-`./setup.sh`
+3. Setup the environment
+To setup the whole environment, run:
+```sh
+docker compose up -d --build
+```
 
-If you encounter permission errors, make sure the script is executable:
+This will:
+1. Setup and run the Solr server
+2. Populate the Solr server using Traject
+3. Run the Blacklight frontend.
 
-`chmod +x setup.sh`
+#### Those services can be launched individually.
 
-### Execute ETL
+To run Solr:
+```sh
+docker compose up -d --build solr
+```
 
-ETL is executed everytime you run `./setup.sh`. ETL components can also be ran individually.
+To run Traject (dev mode):
+```sh
+docker compose run --rm --build etl-traject
+```
 
-#### Running python script `retriever.py` and `serializer.py`
-This will make sure you have the latest data stored locally.
-`docker compose run --rm etl-ptyhon`
+To run Blacklight:
+```sh
+docker compose up -d --build blacklight
+```
 
-#### Running Traject
-This will inject data into Solr. For the following command to run properly, make sure the Solr container is running and healthy.
-`docker compose run --rm etl-traject`
+To manually download the latest version of the data run:
+```sh
+docker compose run --rm etl ./fetch.sh
+```
+
+#### Update Solr live server
+
+To update Spokenweb's Solr live server, you will need to create `/sw_etl/.env.production`:
+
+```
+SOLR_URL=https://credentials:provider/...
+```
+
+Then run the Traject service using that environment file:
+```sh
+docker compose run --rm .env.production etl-traject
+```
+
 
 ## 🧹 Flushing Solr Records
 To delete all existing documents from Solr:

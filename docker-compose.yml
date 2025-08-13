@@ -28,6 +28,13 @@ services:
     volumes:
       - ./sw_etl/traject/data:/data    
       
+  etl:
+    build:
+      context: ./tmp
+      dockerfile: Dockerfile
+    volumes:
+      - ./tmp/data:/etl/data
+
   blacklight:
     build:
       context: ./blacklight_front
