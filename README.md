@@ -80,7 +80,7 @@ SOLR_URL=https://credentials:provider/...
 
 Then run the Traject service using that environment file:
 ```sh
-docker compose run --rm .env.production etl-traject
+docker compose run --rm --env-file .env.production etl
 ```
 
 

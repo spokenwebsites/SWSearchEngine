@@ -8,25 +8,25 @@ services:
     post_start:
       - command: ["solr", "create_core", "-c", "swallow2", "-d", "/custom-conf/" ]
       
-  etl-python:
-    build:
-      context: ./sw_etl
-      dockerfile: ./Dockerfile
-    volumes:
-      - ./sw_etl/traject/data:/app/data
-    working_dir: /app
+  # etl-python:
+  #   build:
+  #     context: ./sw_etl
+  #     dockerfile: ./Dockerfile
+  #   volumes:
+  #     - ./sw_etl/traject/data:/app/data
+  #   working_dir: /app
 
-  etl-traject:
-    build:
-      context: ./sw_etl/traject
-      dockerfile: ./Dockerfile
-    working_dir: /traject
-    env_file: ./sw_etl/.env.development
-    depends_on:
-      - solr
-      - etl-python
-    volumes:
-      - ./sw_etl/traject/data:/data    
+  # etl-traject:
+  #   build:
+  #     context: ./sw_etl/traject
+  #     dockerfile: ./Dockerfile
+  #   working_dir: /traject
+  #   env_file: ./sw_etl/.env.development
+  #   depends_on:
+  #     - solr
+  #     - etl-python
+  #   volumes:
+  #     - ./sw_etl/traject/data:/data    
       
   etl:
     build:
@@ -34,12 +34,14 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./tmp/data:/etl/data
+    depends_on:
+      - solr
 
   blacklight:
     build:
       context: ./blacklight_front
       dockerfile: ./Dockerfile
-    depends_on:
-      - etl-traject
+    # depends_on:
+    #   - etl-traject
     ports:
       - 3000:3000
