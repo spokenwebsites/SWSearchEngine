@@ -5,8 +5,6 @@
 require 'httpclient'
 require_relative './date_normalizer'
 
-puts "SOLR_URL=#{ENV['SOLR_URL']}"
-
 settings do
   # uses .env.development by default (cf. docker-compose.yml).
   # create/update .env.production file to connect to live server instead.
