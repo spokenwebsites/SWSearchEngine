@@ -18,7 +18,7 @@ services:
       
   etl:
     build:
-      context: ./tmp
+      context: ./etl
       dockerfile: Dockerfile
     volumes:
       - ./tmp/data:/etl/data
