@@ -11,7 +11,7 @@ settings do
   # uses .env.development by default (cf. docker-compose.yml).
   # create/update .env.production file to connect to live server instead.
   # defaults to local url if not .env.xxx files are found.
-  provide 'solr.url', ENV.fetch('SOLR_URL', 'http://spokenweb_solr:8983/solr/swallow2/')
+  provide 'solr.url', ENV.fetch('SOLR_URL', 'http://solr:8983/solr/swallow2/')
 
   # default source type is binary, traject can't guess
   # you have to tell it.
