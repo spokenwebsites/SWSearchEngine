@@ -33,14 +33,10 @@ RUN rm -f ./app/tmp/pids/server.pid
 
 COPY . . 
 
-COPY . .
-
 RUN bundle exec rake assets:precompile
-
-RUN bundle exec rails db:create
-
-RUN bundle exec rails db:migrate
 
 RUN bundle exec rake app:update:bin
 
-CMD ["bin/rails", "server", "-b", "0.0.0.0"] 
+RUN bundle exec rails db:prepare
+
+CMD ["bin/rails", "server", "-b", "0.0.0.0"]
