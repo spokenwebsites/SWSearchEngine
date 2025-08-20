@@ -7,26 +7,14 @@ services:
       - 8983:8983
     post_start:
       - command: ["solr", "create_core", "-c", "swallow2", "-d", "/custom-conf/" ]
-      
-  # etl-python:
-  #   build:
-  #     context: ./sw_etl
-  #     dockerfile: ./Dockerfile
-  #   volumes:
-  #     - ./sw_etl/traject/data:/app/data
-  #   working_dir: /app
-
-  # etl-traject:
-  #   build:
-  #     context: ./sw_etl/traject
-  #     dockerfile: ./Dockerfile
-  #   working_dir: /traject
-  #   env_file: ./sw_etl/.env.development
-  #   depends_on:
-  #     - solr
-  #     - etl-python
-  #   volumes:
-  #     - ./sw_etl/traject/data:/data    
+    # This healthcheck will only work for dev setup
+    # Use environement variables instead.
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8983/solr/swallow2/admin/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
       
   etl:
     build:
