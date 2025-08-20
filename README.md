@@ -62,7 +62,7 @@ docker compose up -d --build solr
 
 To run Traject (dev mode):
 ```sh
-docker compose run --rm --build etl-traject
+docker compose run --rm --build etl
 ```
 
 To run Blacklight:
@@ -77,7 +77,7 @@ docker compose run --rm etl ./fetch.sh
 
 #### Reindexing Solr live server
 
-To reindex Spokenweb's Solr live server, you will need to create `/sw_etl/.env.production`:
+To reindex Spokenweb's Solr live server, you will need to create `/etl/.env.production`:
 
 ```
 SOLR_URL=https://credentials:provider/...
@@ -94,7 +94,7 @@ We all need a fresh start somtime. To clean the development environement, you ca
 ```sh
 make clean
 ```
-This removes all docker containers, images, volumes and networks
+This removes all docker containers, images, volumes and networks related to this particular environment.
 
 ## 🧹 Flushing Solr Records
 To delete all existing documents from Solr:
