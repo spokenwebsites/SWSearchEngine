@@ -43,6 +43,11 @@ To setup the whole environment, run:
 docker compose up -d --build
 ```
 
+Alternatively, you can use the:
+```sh
+make dev
+```
+
 This will:
 1. Setup and run the Solr server
 2. Populate the Solr server using Traject
@@ -70,9 +75,9 @@ To manually download the latest version of the data run:
 docker compose run --rm etl ./fetch.sh
 ```
 
-#### Update Solr live server
+#### Reindexing Solr live server
 
-To update Spokenweb's Solr live server, you will need to create `/sw_etl/.env.production`:
+To reindex Spokenweb's Solr live server, you will need to create `/sw_etl/.env.production`:
 
 ```
 SOLR_URL=https://credentials:provider/...
@@ -83,6 +88,13 @@ Then run the Traject service using that environment file:
 docker compose run --rm --env-file .env.production etl
 ```
 
+#### Cleaning dev environement
+
+We all need a fresh start somtime. To clean the development environement, you can run:
+```sh
+make clean
+```
+This removes all docker containers, images, volumes and networks
 
 ## 🧹 Flushing Solr Records
 To delete all existing documents from Solr:
