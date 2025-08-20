@@ -40,11 +40,6 @@ docker compose run --rm etl ./fetch.sh
 3. Setup the environment
 To setup the whole environment, run:
 ```sh
-docker compose up -d --build
-```
-
-Alternatively, you can use the:
-```sh
 make dev
 ```
 

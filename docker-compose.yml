@@ -22,15 +22,15 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./etl/data:/etl/data
-    depends_on:
-      - solr
+    # depends_on:
+    #   - solr
 
   blacklight:
     build:
       context: ./blacklight_front
       dockerfile: ./Dockerfile
-    depends_on:
-      - solr
-      - etl
+    # depends_on:
+    #   - solr
+    #   - etl
     ports:
       - 3000:3000
