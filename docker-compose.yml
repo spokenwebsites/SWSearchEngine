@@ -21,16 +21,16 @@ services:
       context: ./etl
       dockerfile: Dockerfile
     volumes:
-      - ./tmp/data:/etl/data
-    # depends_on:
-      # - solr
-      # - blacklight
+      - ./etl/data:/etl/data
+    depends_on:
+      - solr
 
   blacklight:
     build:
       context: ./blacklight_front
       dockerfile: ./Dockerfile
-    # depends_on:
-    #   - etl-traject
+    depends_on:
+      - solr
+      - etl
     ports:
       - 3000:3000
