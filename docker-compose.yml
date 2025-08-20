@@ -22,8 +22,9 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./tmp/data:/etl/data
-    depends_on:
-      - solr
+    # depends_on:
+      # - solr
+      # - blacklight
 
   blacklight:
     build:

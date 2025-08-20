@@ -1,0 +1,10 @@
+services:
+  test:
+    build: .
+    working_dir: /app
+    command: ruby update.rb
+    develop:
+      watch:
+        - action: rebuild
+          path: ./update.rb
+          target: /app/update.rb
