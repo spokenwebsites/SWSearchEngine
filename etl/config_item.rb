@@ -51,13 +51,16 @@ to_field 'collection_source_collection' do |record, accumulator, _c|
   accumulator.concat(collection_source_collection.compact)
 end
 
-to_field 'collection_source_collection_description' do |record, accumulator, _c|
-  collection_source_collection_description = record.xpath('/item/classification/item').map do |node|
-    node.xpath('Source_Collection_Description').text if node.xpath('class_name').map(&:text).include?('collection')
+to_field "collection_source_collection_description" do |record, accumulator, _c|
+  # Restrict to the <classification> node that is directly under <record>
+  node = record.at_xpath("./classification/item[class_name='collection']")
+  if node
+    desc = node.at_xpath("Source_Collection_Description")&.text&.strip
+    accumulator << desc if desc && !desc.empty?
   end
-
-  accumulator.concat(collection_source_collection_description.compact)
 end
+
+
 
 to_field 'source_collection_label' do |record, accumulator, _c|
   source_collection_label = record.xpath('/item/classification/item').map do |node|
@@ -78,6 +81,15 @@ end
 #   collection_source_collection_description = record.xpath('/item/classification/item/Source_Collection_Description').map(&:text).first
 #   accumulator.concat [collection_source_collection_description]
 # end
+
+to_field "collection_source_collection_description" do |record, accumulator, _c|
+  record.xpath("//classification/item").each do |node|
+    if node.at_xpath("class_name")&.text == "collection"
+      desc = node.at_xpath("Source_Collection_Description")&.text
+      accumulator << desc if desc && !desc.empty?
+    end
+  end
+end
 
 to_field 'collection_source_collection_id' do |record, accumulator, _c|
   collection_source_collection_id = record.xpath('/item/classification/item/Source_Collection_ID').map(&:text).first
