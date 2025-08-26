@@ -15,6 +15,7 @@
       </dd>
     </div>
   <% end %>
+
   <% if @document.partnerInstitution.present? %>
   <div class="row">
     <dt class="subheading col-md-3">Partner Institution:</dt>
@@ -51,6 +52,15 @@
   </div>
   <% end %>
 
+  <% if @document['series_description'].present? %>
+     <div class="row">
+     <dt class="subheading col-md-3">Series Description:</dt>
+     <dd class="col-md-9 subheading_values">
+           <%= @document['series_description'].first %>
+     </dd>
+   </div>
+   <% end %>
+
   <% if @document.item_subseries_title.present? %>
   <div class="row">
     <dt class="subheading col-md-3">Sub Series:</dt>
@@ -59,6 +69,15 @@
     </dd>
   </div>
   <% end %>
+
+  <% if @document['subseries_description'].present? %>
+     <div class="row">
+     <dt class="subheading col-md-3">Sub Series Description:</dt>
+     <dd class="col-md-9 subheading_values">
+           <%= @document['subseries_description'].first %>
+     </dd>
+   </div>
+   <% end %>
   <hr class="solid-line">
 
   <!--Item Descirption-->

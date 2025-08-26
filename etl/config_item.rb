@@ -60,7 +60,23 @@ to_field "collection_source_collection_description" do |record, accumulator, _c|
   end
 end
 
+to_field "subseries_description" do |record, accumulator, _c|
+  node = record.at_xpath("./classification/item[class_name='subseries']")
+  if node
+    # handle either <description> or <Description> defensively
+    desc_node = node.at_xpath("description")&.text&.strip
+    accumulator << desc if desc && !desc.empty?
+  end
+end
 
+to_field "series_description" do |record, accumulator, _c|
+  node = record.at_xpath("./classification/item[class_name='series']")
+  if node
+    # handle either <description> or <Description> defensively
+    desc_node = node.at_xpath("description")&.text&.strip
+    accumulator << desc if desc && !desc.empty?
+  end
+end
 
 to_field 'source_collection_label' do |record, accumulator, _c|
   source_collection_label = record.xpath('/item/classification/item').map do |node|
@@ -75,17 +91,28 @@ to_field 'collection_contributing_unit' do |record, accumulator, _c|
   accumulator.concat [collection_contributing_unit]
 end
 
-### Source_Collection_Description
-
-# to_field 'collection_source_collection_description' do |record, accumulator, _c|
-#   collection_source_collection_description = record.xpath('/item/classification/item/Source_Collection_Description').map(&:text).first
-#   accumulator.concat [collection_source_collection_description]
-# end
-
 to_field "collection_source_collection_description" do |record, accumulator, _c|
   record.xpath("//classification/item").each do |node|
     if node.at_xpath("class_name")&.text == "collection"
       desc = node.at_xpath("Source_Collection_Description")&.text
+      accumulator << desc if desc && !desc.empty?
+    end
+  end
+end
+
+to_field "subseries_description" do |record, accumulator, _c|
+  record.xpath("//classification/item").each do |node|
+    if node.at_xpath("class_name")&.text == "subseries"
+      desc = node.at_xpath("description")&.text
+      accumulator << desc if desc && !desc.empty?
+    end
+  end
+end
+
+to_field "series_description" do |record, accumulator, _c|
+  record.xpath("//classification/item").each do |node|
+    if node.at_xpath("class_name")&.text == "series"
+      desc = node.at_xpath("description")&.text
       accumulator << desc if desc && !desc.empty?
     end
   end

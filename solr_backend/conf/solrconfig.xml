@@ -60,7 +60,9 @@ item_language
 item_production_context
 item_genre
 item_series_title
+series_description
 item_subseries_title
+subseries_description
 item_identifiers
 rights
 rights_license
@@ -245,4 +247,3 @@ Related_works
 
   <requestHandler name="/analysis/field" startup="lazy" class="solr.FieldAnalysisRequestHandler" />
 </config>
-

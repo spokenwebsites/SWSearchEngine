@@ -146,6 +146,8 @@ class CatalogController < ApplicationController
 
     #config.add_show_field 'collection_source_collection_description', label: 'Collection Description'
     config.add_index_field 'collection_source_collection_description', label: 'Collection Description'
+    # config.add_index_field 'subseries_description', label: 'Series Description'
+    # config.add_index_field 'series_description', label: 'Sub Series Description'
 
     config.add_index_field 'performer_name', label: 'Performers',link_to_facet: 'contributors_names'
     config.add_index_field 'creator_names', label: 'Creators',link_to_facet: 'creator_names'
