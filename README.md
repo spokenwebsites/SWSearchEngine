@@ -91,17 +91,39 @@ make clean
 ```
 This removes all docker containers, images, volumes and networks related to this particular environment.
 
-## 🧹 Flushing Solr Records
-To delete all existing documents from Solr:
+## 🧹 Backup workflows
 
-- Go to the Solr Admin UI (usually at http://localhost:8983/solr).
-- Navigate to the Core that holds your data.
-- Go to Documents > XML.
-- Paste the following XML into the editor and click Execute:
+### Data management (leave core untouched)
 
-`<delete><query>*:*</query></delete>`
+You can backup the data, dump it from the core and restore it using the Makfile.
+
+`make backup` will backup the data currently indexed. The backup is store in a json file located in `./etl/data/dumps/`.
+
+`make list` lists backups files available locally.
+
+`make dump` removes all indexed data from the core. 
+
+`make restore <filename>` restores a specific backup.
+
+If no backups are available locally, you can always try to run `make traject` which will run traject (which, in turn, won't work if there is a mismatch between the running core schema and the one described in `config_item.rb` or if `swallow-data-full.xml` is not found in `etl/data/`).
+
+### Core management
+
+Cores can be unloaded, restored, backed up using the Makefile.
+
+`make backup-core <core_name>` will create a backup of *core_name*. This backup is saved on the Solr filesystem at `/var/solr/data/<core_name>/backups/`. To keep track of the created backups, a log is available in `etl/data/cores/solr-backups-log_development.txt`. The latter only tracks backups you have ran from your machine. To get all available backups, one has to ssh into Solr server.
+
+`make restore-core <core_name>` restores a core from remaining files available  `/var/solr/data/<core_name>/backups/`.
+
+`make restore-core <backup_name>` restores core from existing backup.
+
+`make create <core_name>` creates a new core. (Usefull for test cores or for running traject)
+
+`make traject` runs traject script.
+
 
 ## 📥 Ingesting New Metadata with Traject
+
 
 Traject is used to map and load XML metadata into Solr.
 
