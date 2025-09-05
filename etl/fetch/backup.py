@@ -2,7 +2,9 @@ import os
 import sys
 import json
 import time
+import uuid
 import requests
+from typing import Any
 
 from dotenv import load_dotenv
 load_dotenv('/etl/.env.development')
@@ -21,6 +23,28 @@ CORE_BACKUP_PATH = '/etl/data/cores/'
 MAX_BACKUPS = 3
 
 env_mode = 'development'
+
+
+def inspect(response: requests.Response, msg: Any) -> bool:
+    try:
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('ResponseHeader', {}).get('status') == 0:
+                print(f"\n\t{msg['success']}")
+                return True
+            else:
+                print(f"\n\t{msg['error']}")
+                print(response.text)
+                return False
+        else:
+            print(f"\n\t{msg['error']}")
+            print(response.text)
+            return False
+    except (ValueError, AttributeError) as e:
+        print(f"\n\t{msg['error']}")
+        print(f"Exception while parsing response: {e}")
+        print(response.text)
+        return False
 
 
 if __name__ == '__main__':
@@ -70,7 +94,7 @@ if __name__ == '__main__':
 
     # List snapshots (core backups)
     # Does not work unless using SolrCloud
-    elif sys.argv[1] == 'list-core-backups':
+    elif sys.argv[1] == 'list-cores':
         print("\nListing existing core backups...")
 
         try:
@@ -119,7 +143,6 @@ if __name__ == '__main__':
             'instanceDir': '/var/solr/data/swallow2'
         }
         response = requests.get(url, params=params)
-        print(response.url)
         response = json.loads(response.text)
 
         print(response)
@@ -134,14 +157,80 @@ if __name__ == '__main__':
             # 'deleteInstanceDir': 'true',
         }
         response = requests.get(url, params=params)
+        print(response.url)
 
         if response.status_code == 200:
             response = json.loads(response.text)
             print('\tCore swallow2 has been removed with the following paramters:')
-            print('\t' + json.dumps(params, indent=2))
         else:
             print('\tSomething went wrong when deleting the core.')
             print(response.text)
+
+    # Rename core
+    elif sys.argv[1] == 'swap-cores':
+        src_name = ''
+        dest_name = ''
+
+        if not len(sys.argv) >= 4:
+            print('missing arguments.')
+        else:
+            src_name = sys.argv[2]
+            dest_name = sys.argv[3]
+
+        response = requests.get(os.environ['SOLR_ADMIN_URL'],
+            params={
+                'action': 'SWAP',
+                'core': src_name,
+                'other': dest_name,                    
+            })
+
+        print(response.status_code)
+
+        inspect(response, msg={
+            'success': 'Cores were correctly swaped',
+            'error': 'ERROR: problem while swiping cores.'
+        })            
+
+    elif sys.argv[1] == 'create-core':
+        core = f'default_name{str(uuid.uuid4())[:4]}'        
+        if len(sys.argv) >= 3:
+            core = sys.argv[2]
+        else:
+            print('\n\tNo core name provided.')
+            print(f'\n\tCreating new core {core}...')
+
+        # Can create core from another
+        # https://solr.apache.org/guide/solr/latest/configuration-guide/coreadmin-api.html#coreadmin-create
+        response = requests.get(os.environ['SOLR_ADMIN_URL'],
+            params={
+                'action': 'CREATE',
+                'name': core,
+                'instanceDir': 'tmp',
+                'config': './conf/solrconfig.xml',
+                'schema': './conf/managed-schema.xml'
+            })
+
+        inspect(response, msg={
+            'success': 'Core was correctly created.',
+            'error': f'ERROR: problem creating core {core}'
+        })
+
+    elif sys.argv[1] == 'reload-core':
+        core = ''
+        if len(sys.argv) >= 3:
+            core = sys.argv[2]
+        else:
+            print('\n\tNo core name provided.')
+            exit(0)
+
+        print(f'\n\tReloading core {core}...')
+
+        response = requests.get(os.environ['SOLR_ADMIN_URL'])
+        inspect(response, msg={
+            'success': f'Core {core} reloaded successfully.',
+            'error': f'ERROR: could not reload core {core}.'
+        })
+            
 
     # Backup data
     elif sys.argv[1] == 'backup':
@@ -222,4 +311,5 @@ if __name__ == '__main__':
                     
     else:
         print('updater.py usage: python3 script.py <backup|restore|build> <[dev=default]|production>')
+
 

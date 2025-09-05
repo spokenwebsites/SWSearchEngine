@@ -113,13 +113,76 @@ Cores can be unloaded, restored, backed up using the Makefile.
 
 `make backup-core <core_name>` will create a backup of *core_name*. This backup is saved on the Solr filesystem at `/var/solr/data/<core_name>/backups/`. To keep track of the created backups, a log is available in `etl/data/cores/solr-backups-log_development.txt`. The latter only tracks backups you have ran from your machine. To get all available backups, one has to ssh into Solr server.
 
-`make restore-core <core_name>` restores a core from remaining files available  `/var/solr/data/<core_name>/backups/`.
+`make delete-core` deletes the core. This operation removes the index but leaves the core folder intact. This way, core can be recreated from existing files with:
+
+`make recreate-core` restores a core and its index from local directory (inside solr filessytem).
+ 
+`make restore-core` restores a core from remaining files available  `/var/solr/data/swallow2/backups/`.
 
 `make restore-core <backup_name>` restores core from existing backup.
 
 `make create <core_name>` creates a new core. (Usefull for test cores or for running traject)
 
-`make traject` runs traject script.
+`make traject <core_name>` creates index and updates data with swallow-data-full.xml to <core_name>. Defaults to `swallow2`.
+
+
+### Cookbook
+
+#### Updating production server with new data
+
+1. Get latest version of the swallow dataset
+> make fetch-latest
+
+2. Backup data from `swallow2` core
+> make backup
+
+3. Remove all indexed data from the core
+> make dump
+
+4. Run traject to upload the newest version of the data
+> make traject
+
+If anything goes wrong, you can rollback using:
+
+5. List local backups and copy the last filename
+> make list
+
+6. Restore latest backup
+> make restore <filename>
+
+
+#### Updating production server with new schema
+
+This recipe considers that your local environement contains the latest version of the schema.
+
+0. Make sure you have latest dataset from swallow
+> make fetch-latest
+
+1. SSH into Solr server
+> ssh $SOLR_URL
+
+2. Create a a `tmp` folder and remove existing files. Exit when done.
+> cd /var/solr/data
+> rm -rf tmp
+> mkdir tmp
+> exit
+
+3. (Secure) Copy local Solr configuration folder to created tmp folder
+> scp ./solr_backend/conf $SOLR_URL/var/solr/data/tmp/conf
+
+4. Create a `tmp` core from configuration
+> make create-core tmp
+
+5. Index latest dataset to `tmp` core
+> make traject tmp
+
+6. Make a backup of production core
+> make backup-core
+
+7. Make sure that everything is ok by accessing the ADMIN GUI.
+
+8. If everything is ok, swap cores
+> make swap-cores swallow2 tmp
 
 
 ## 📥 Ingesting New Metadata with Traject
