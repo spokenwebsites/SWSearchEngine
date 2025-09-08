@@ -4,6 +4,7 @@ import json
 import time
 import uuid
 import requests
+import subprocess
 from typing import Any
 
 from dotenv import load_dotenv
@@ -26,10 +27,11 @@ env_mode = 'development'
 
 
 def inspect(response: requests.Response, msg: Any) -> bool:
+    print(response.status_code)
     try:
-        if response.status_code == 200:
+        if response.status_code != 404:
             data = response.json()
-            if data.get('ResponseHeader', {}).get('status') == 0:
+            if data.get('responseHeader', {}).get('status') == 0:
                 print(f"\n\t{msg['success']}")
                 return True
             else:
@@ -148,10 +150,20 @@ if __name__ == '__main__':
         print(response)
 
     elif sys.argv[1] == 'delete-core':
-        print('\n\tRemoving swallow2 core...')
+        core = 'swallow2'
+
+        if len(sys.argv) >= 3:
+            core = sys.argv[2]
+
+        proceed = input(f'\n\tRemoving {core} core. Proceed? [y/n]')
+
+        if not (proceed == 'y' or proceed == 'Y'):
+            print(f'\n\tAborting deletion of {core}.')
+            exit(0)
+        
         url = os.environ['SOLR_ADMIN_URL']
         params = {
-            'core': 'swallow2',
+            'core': core,
             'action': 'UNLOAD',
             'deleteIndex': 'true',
             # 'deleteInstanceDir': 'true',
@@ -230,11 +242,22 @@ if __name__ == '__main__':
             'success': f'Core {core} reloaded successfully.',
             'error': f'ERROR: could not reload core {core}.'
         })
-            
 
+    elif sys.argv[1] == 'traject':
+        proceed = input(f"\n\t About to traject data to {os.environ['SOLR_URL']}... Proceed [Y/n]?")
+
+        if not (proceed == 'y' or proceed == 'Y'):
+            print('\n\tAbort running traject.')
+            exit(0)
+
+        subprocess.run(["traject", "-i", "xml", "-c", "./config_item.rb", "./data/output/swallow-data-full.xml"], check=True)
+       
+         
     # Backup data
     elif sys.argv[1] == 'backup':
-        print('Backuping data...')
+        print(f"\n\tBackuping data {os.environ['SOLR_URL']}...")
+
+        fname = DATA_BACKUP_PATH + 'dump.' + time.strftime("%Y-%m-%d_%H-%M-%S", t) + '.json'
 
         url = os.environ['SOLR_URL'] + 'select'
         params = {
@@ -248,7 +271,6 @@ if __name__ == '__main__':
             print('\n\tCould not backup data.\n')
             print(response.text)
         else:
-            fname = DATA_BACKUP_PATH + 'dump.' + time.strftime("%Y-%m-%d_%H-%M-%S", t) + '.json'
             with open(fname, 'w+') as f:
                 docs = response.json()['response']['docs']
                 json.dump(docs, f, indent=2)

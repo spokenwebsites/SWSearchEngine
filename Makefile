@@ -11,11 +11,8 @@ clean:
 	rm -rf ./etl/data/dumps && \
 	rm -rf ./etl/data/cores
 
-backup-core restore-core delete-core recreate-core list-cores swap-cores create-core reload-core backup dump restore list:
+backup-core restore-core delete-core recreate-core list-cores swap-cores create-core reload-core traject backup dump restore list:
 	docker compose run --rm etl python3 ./fetch/backup.py $@ $(filter-out $@,$(MAKECMDGOALS))
-
-traject:
-	docker compose run --rm etl
 
 # Swallow extra args so make doesn’t error out
 %:
