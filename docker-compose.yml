@@ -26,6 +26,8 @@ services:
       context: ./etl
       dockerfile: Dockerfile
     volumes:
+      - ./etl/data:/etl/data
+      - ./etl/fetch:/etl/fetch
       - ./etl/:/etl/
     # depends_on:
     #   - solr

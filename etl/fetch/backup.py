@@ -27,10 +27,10 @@ env_mode = 'development'
 
 
 def inspect(response: requests.Response, msg: Any) -> bool:
-    print(response.status_code)
     try:
-        if response.status_code != 404:
+        if not response.status_code == 404:
             data = response.json()
+            print(data)
             if data.get('responseHeader', {}).get('status') == 0:
                 print(f"\n\t{msg['success']}")
                 return True
@@ -39,6 +39,7 @@ def inspect(response: requests.Response, msg: Any) -> bool:
                 print(response.text)
                 return False
         else:
+            print(f'\n\t404 - {response.url}')
             print(f"\n\t{msg['error']}")
             print(response.text)
             return False
@@ -48,6 +49,14 @@ def inspect(response: requests.Response, msg: Any) -> bool:
         print(response.text)
         return False
 
+
+def proceed(msg):
+    prompt = input(f'\n\t{msg} Proceed? [y/n]')
+    if prompt == 'y' or prompt == 'Y':
+        return True
+    else:
+        print('Aborting.')
+        exit(0)
 
 if __name__ == '__main__':
     if not os.path.isdir(DATA_BACKUP_PATH):
@@ -74,9 +83,16 @@ if __name__ == '__main__':
 
     # Backup core
     if sys.argv[1] == 'backup-core':
-        print('Backing up core on %s mode...' % env_mode)
+        core = None
+        if len(sys.argv) >= 3:
+            core = sys.argv[2]
+        else:
+            print('\n\tERROR: Could not backup core. No core name provided.')
+            exit(0)
 
-        url = os.environ['SOLR_URL'] + 'replication'
+        print(f'\n\tBacking up core {core} on {env_mode} mode...')
+
+        url = os.environ['SOLR_BASE'] + f'/{core}' + '/replication'
         snapshot_name = time.strftime("%Y-%m-%d_%H-%M-%S", t)
         params = {
             'command': 'backup',
@@ -85,14 +101,16 @@ if __name__ == '__main__':
             'numberToKeep': MAX_BACKUPS,
         }
         response = requests.get(url, params=params)
-        response = json.loads(response.text)
-      
-        if response.get('status') == 'OK':
-            print('\n\tNew backup snapshot.%s has been made.' % snapshot_name)
+
+        if inspect(response, msg={
+            'success': f"New backup snapshot.{snapshot_name} has been made.",
+            'error': 'Could not backup the core.'
+        }):
             with open(logPath, 'a+') as f:
-                f.write('snapshot.' + snapshot_name + '\n')
-        else:
-            print(response['error']['msg'], '\n')
+                f.write(f'{core}\t|\tsnapshot.{snapshot_name}\n')
+        else:    
+             print(response.text)
+      
 
     # List snapshots (core backups)
     # Does not work unless using SolrCloud
@@ -109,20 +127,19 @@ if __name__ == '__main__':
 
     # Restore particular backup from <name>
     elif sys.argv[1] == 'restore-core':
-        print('Restoring data from backup...')
-      
-        if len(sys.argv) >= 3:
-            backup_name = sys.argv[2]
+        core = None
+        backup_name = None
+
+        if len(sys.argv) >= 4:
+            core = sys.argv[2]
+            backup_name = sys.argv[3]
         else:
-            try:
-                with open(logPath) as f:
-                    print(f'\tNo backup name provided. Using latest backup found in {logPath}')
-                    backups = f.readlines()
-                    backup_name = backups[-1].strip()
-            except FileNotFoundError:
-                print(f'\n\tERROR: {logPath} does not exist.')
-                    
-        url = os.environ['SOLR_URL'] + 'replication'
+            print('\n\tERROR: Could not restore core. Missing core name and/or backup name in arguments.')
+            exit(0)
+
+        proceed(f'Restoring core {core} index from backup...')           
+
+        url = os.environ['SOLR_BASE'] + f'/{core}'+ '/replication'
         params = {
             'command': 'restore',
             'location': SOLR_BACKUP_PATH,
@@ -130,36 +147,19 @@ if __name__ == '__main__':
         }
 
         response = requests.get(url, params=params)
-        if response.status_code != 200:
-            print(response.text)
-        else:
-            response = json.loads(response.text)
-            print(response)
+        inspect(response, msg={
+            'success': f"Core {core} was successfully recovered.",
+            'error': 'Could not restore {core}.'
+        })
        
-    elif sys.argv[1] == 'recreate-core':
-        print('Recreating swallow2 core...')
-        url = os.environ['SOLR_ADMIN_URL']
-        params = {
-            'action': 'CREATE',
-            'name': 'swallow2',
-            'instanceDir': '/var/solr/data/swallow2'
-        }
-        response = requests.get(url, params=params)
-        response = json.loads(response.text)
-
-        print(response)
-
     elif sys.argv[1] == 'delete-core':
         core = 'swallow2'
-
         if len(sys.argv) >= 3:
             core = sys.argv[2]
+        else:
+            print('\n\ntERROR: Could not delete core. No core name provided.')
 
-        proceed = input(f'\n\tRemoving {core} core. Proceed? [y/n]')
-
-        if not (proceed == 'y' or proceed == 'Y'):
-            print(f'\n\tAborting deletion of {core}.')
-            exit(0)
+        proceed(f'Deleting {core} core...')
         
         url = os.environ['SOLR_ADMIN_URL']
         params = {
@@ -171,23 +171,22 @@ if __name__ == '__main__':
         response = requests.get(url, params=params)
         print(response.url)
 
-        if response.status_code == 200:
-            response = json.loads(response.text)
-            print('\tCore swallow2 has been removed with the following paramters:')
-        else:
-            print('\tSomething went wrong when deleting the core.')
-            print(response.text)
+        inspect(response, msg={
+            'success': 'Core swallow2 has been deleted.',
+            'error': 'Something went wrong when deleting the core.'
+        })
 
     # Rename core
     elif sys.argv[1] == 'swap-cores':
-        src_name = ''
-        dest_name = ''
-
+        src_name = None
+        dest_name = None
         if not len(sys.argv) >= 4:
             print('missing arguments.')
         else:
             src_name = sys.argv[2]
             dest_name = sys.argv[3]
+
+        proceed(f'Swaping cores {src_name} and {dest_name}')
 
         response = requests.get(os.environ['SOLR_ADMIN_URL'],
             params={
@@ -196,20 +195,20 @@ if __name__ == '__main__':
                 'other': dest_name,                    
             })
 
-        print(response.status_code)
-
         inspect(response, msg={
             'success': 'Cores were correctly swaped',
             'error': 'ERROR: problem while swiping cores.'
         })            
 
     elif sys.argv[1] == 'create-core':
-        core = f'default_name{str(uuid.uuid4())[:4]}'        
+        core = None
         if len(sys.argv) >= 3:
             core = sys.argv[2]
         else:
-            print('\n\tNo core name provided.')
-            print(f'\n\tCreating new core {core}...')
+            print('\n\tERROR: Could not create core. No core name provided')
+            exit(0)
+
+        print(f'\n\tCreating core {core}...')
 
         # Can create core from another
         # https://solr.apache.org/guide/solr/latest/configuration-guide/coreadmin-api.html#coreadmin-create
@@ -217,18 +216,17 @@ if __name__ == '__main__':
             params={
                 'action': 'CREATE',
                 'name': core,
-                'instanceDir': 'tmp',
+                'instanceDir': f'/var/solr/data/{core}',
                 'config': './conf/solrconfig.xml',
                 'schema': './conf/managed-schema.xml'
             })
-
         inspect(response, msg={
-            'success': 'Core was correctly created.',
+            'success': f'Core {core} was correctly created.',
             'error': f'ERROR: problem creating core {core}'
         })
 
     elif sys.argv[1] == 'reload-core':
-        core = ''
+        core = None
         if len(sys.argv) >= 3:
             core = sys.argv[2]
         else:
