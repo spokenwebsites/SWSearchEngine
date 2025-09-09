@@ -14,10 +14,13 @@ RUN apt-get update \
 
 RUN pip3 install -U --no-cache-dir \
     dicttoxml==1.7.16 \
-    requests==2.32.4
+    requests==2.32.4 \
+    python-dotenv
 
 RUN gem install bundler -v 2.4.22 && \
     bundle config set --local without '' && \
     bundle install
 
 CMD ["traject", "-i", "xml", "-c", "./config_item.rb", "./data/output/swallow-data-full.xml"]
+
+# CMD ["bash"]
