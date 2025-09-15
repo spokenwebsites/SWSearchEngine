@@ -130,6 +130,9 @@
   <field name="collection_source_collection_description" type="text_general" multiValued="true" indexed="true" stored="true"/>
   <field name="collection_source_collection_id" type="text_general" multiValued="true" indexed="true" stored="true"/>
   <field name="persistent_url" type="text_general" multiValued="true" indexed="true" stored="true"/>
+  <field name="source_collection_uri" type="string" multiValued="true" indexed="true" stored="true"/>
+  <field name="collection_image_url" type="string" multiValued="true" indexed="true" stored="true"/>
+
   <field name="insitution_collection_item_id" type="text_general" multiValued="true" indexed="true" stored="true"/>
   
   <field name="item_title" type="text_general" multiValued="true" indexed="true" stored="true"/>
@@ -139,9 +142,13 @@
   <field name="item_production_context" type="string" multiValued="true" indexed="true" stored="true"/>
   <field name="item_genre" type="string" multiValued="true" indexed="true" stored="true"/>
   <field name="item_series_title" type="string" multiValued="true" indexed="true" stored="true"/>
-  <field name="series_description" type="text_general" multiValued="true" indexed="true" stored="true"/>
+  <field name="item_series_description" type="text_general" multiValued="true" indexed="true" stored="true"/>
+  <field name="item_series_wikidata_url" type="text_general" multiValued="true" indexed="true" stored="true"/>
+  <field name="item_series_uri" type="text_general" multiValued="true" indexed="true" stored="true"/>
   <field name="item_subseries_title" type="text_general" multiValued="true" indexed="true" stored="true"/>
-  <field name="subseries_description" type="text_general" multiValued="true" indexed="true" stored="true"/>
+  <field name="item_subseries_description" type="text_general" multiValued="true" indexed="true" stored="true"/>
+  <field name="item_subseries_uri" type="text_general" multiValued="true" indexed="true" stored="true"/>
+
   <field name="item_identifiers" type="text_general" multiValued="true" indexed="true" stored="true"/>
 
  

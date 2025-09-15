@@ -51,6 +51,8 @@ source_collection_label
 collection_contributing_unit
 collection_source_collection_description
 collection_source_collection_id
+source_collection_uri
+collection_image_url
 persistent_url
 insitution_collection_item_id
 item_title
@@ -60,9 +62,12 @@ item_language
 item_production_context
 item_genre
 item_series_title
-series_description
+item_series_description
+item_series_wikidata_url
+item_series_uri
 item_subseries_title
-subseries_description
+item_subseries_description
+item_subseries_uri
 item_identifiers
 rights
 rights_license

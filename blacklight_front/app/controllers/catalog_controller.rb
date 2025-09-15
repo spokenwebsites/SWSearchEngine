@@ -142,12 +142,15 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
-    config.add_index_field 'source_collection_label', label: 'Collection'
+    config.add_index_field 'source_collection_label', label: 'Collection Title', link_to_facet: 'source_collection_label'
 
     #config.add_show_field 'collection_source_collection_description', label: 'Collection Description'
-    config.add_index_field 'collection_source_collection_description', label: 'Collection Description'
-    # config.add_index_field 'subseries_description', label: 'Series Description'
-    # config.add_index_field 'series_description', label: 'Sub Series Description'
+    # config.add_index_field 'collection_source_collection_description', label: 'Collection Description'
+    # config.add_index_field 'collection_source_collection_description', label: 'Collection Description'
+    config.add_index_field 'item_series_title', label: 'Series Title', link_to_facet: 'item_series_title'
+    config.add_index_field 'item_subseries_title', label: 'Sub Series Title', link_to_facet: 'item_subseries_title'
+    # config.add_index_field 'series_description', label: 'Series Description'
+    # config.add_index_field 'subseries_description', label: 'Sub Series Description'
 
     config.add_index_field 'performer_name', label: 'Performers',link_to_facet: 'contributors_names'
     config.add_index_field 'creator_names', label: 'Creators',link_to_facet: 'creator_names'
