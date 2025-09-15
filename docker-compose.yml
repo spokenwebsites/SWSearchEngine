@@ -6,15 +6,20 @@ services:
     ports:
       - 8983:8983
     post_start:
-      - command: ["solr", "create_core", "-c", "swallow2", "-d", "/custom-conf/" ]
+      - command: ["sh", "./post_start.sh"]
+      # - command: ["solr", "create_core", "-c", "swallow2", "-d", "/custom-conf/"]
+    # command: ["bash"]
     # This healthcheck will only work for dev setup
-    # Use environement variables instead.
+    # In production, use environement variables instead.
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:8983/solr/swallow2/admin/ping"]
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 40s
+    # backups path
+    volumes:
+      - ./solr_backend/data:/var/solr/data
       
   etl:
     build:
@@ -22,6 +27,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./etl/data:/etl/data
+      - ./etl/fetch:/etl/fetch
+      - ./etl/:/etl/
     # depends_on:
     #   - solr
 
