@@ -29,8 +29,9 @@ services:
       - ./etl/data:/etl/data
       - ./etl/fetch:/etl/fetch
       - ./etl/:/etl/
-    # depends_on:
-    #   - solr
+    depends_on:
+      - solr
+      - blacklight
 
   blacklight:
     build:

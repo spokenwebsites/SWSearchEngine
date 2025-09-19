@@ -11,8 +11,11 @@ clean:
 	rm -rf ./etl/data/dumps && \
 	rm -rf ./etl/data/cores
 
-backup-core restore-core delete-core recreate-core list-cores swap-cores create-core reload-core traject backup dump restore list:
+create-snapshot restore-core delete-core list-snapshots swap-cores create-core reload-core traject backup dump restore list backup-help:
 	docker compose run --rm etl python3 ./fetch/backup.py $@ $(filter-out $@,$(MAKECMDGOALS))
+
+create-configset:
+	zip -r etl/configsets/$(filter-out $@,$(MAKECMDGOALS)).zip ./solr_backend/conf
 
 # Swallow extra args so make doesn’t error out
 %:

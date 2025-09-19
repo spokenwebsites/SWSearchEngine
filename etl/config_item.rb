@@ -9,7 +9,7 @@ settings do
   # uses .env.development by default (cf. docker-compose.yml).
   # create/update .env.production file to connect to live server instead.
   # defaults to local url if not .env.xxx files are found.
-  provide 'solr.url', ENV.fetch('SOLR_URL', 'http://solr:8983/solr/swallow2/')
+  provide 'solr.url', ENV.fetch('TRAJECT_URL', 'http://solr:8983/solr/swallow2/')
 
   # default source type is binary, traject can't guess
   # you have to tell it.
@@ -47,14 +47,33 @@ to_field 'collection_source_collection' do |record, accumulator, _c|
   collection_source_collection = record.xpath('/item/classification/item').map do |node|
     node.xpath('label').text if node.xpath('class_name').map(&:text).include?('collection')
   end
+
   accumulator.concat(collection_source_collection.compact)
 end
 
-to_field "collection_source_collection_description" do |record, accumulator, _c|
+to_field 'collection_source_collection_description' do |record, accumulator, _c|
   # Restrict to the <classification> node that is directly under <record>
   node = record.at_xpath("./classification/item[class_name='collection']")
   if node
-    desc = node.at_xpath("Source_Collection_Description")&.text&.strip
+    desc = node.at_xpath('Source_Collection_Description')&.text&.strip
+    accumulator << desc if desc && !desc.empty?
+  end
+end
+
+to_field 'subseries_description' do |record, accumulator, _c|
+  node = record.at_xpath("./classification/item[class_name='subseries']")
+  if node
+    # handle either <description> or <Description> defensively
+    node.at_xpath('description')&.text&.strip
+    accumulator << desc if desc && !desc.empty?
+  end
+end
+
+to_field 'series_description' do |record, accumulator, _c|
+  node = record.at_xpath("./classification/item[class_name='series']")
+  if node
+    # handle either <description> or <Description> defensively
+    node.at_xpath('description')&.text&.strip
     accumulator << desc if desc && !desc.empty?
   end
 end
@@ -72,25 +91,32 @@ to_field 'collection_contributing_unit' do |record, accumulator, _c|
   accumulator.concat [collection_contributing_unit]
 end
 
-to_field 'source_collection_uri' do |record, accumulator, _c|
-  collection_source_collection_id = record.xpath('/item/classification/item/URI').map(&:text).first
-  accumulator.concat [collection_source_collection_id]
-end
-
-to_field 'collection_image_url' do |record, accumulator, _c|
-  collection_source_collection_id = record.xpath('/item/classification/item/Collection_Image_URL').map(&:text).first
-  accumulator.concat [collection_source_collection_id]
-end
-
-to_field "collection_source_collection_description" do |record, accumulator, _c|
-  record.xpath("//classification/item").each do |node|
-    if node.at_xpath("class_name")&.text == "collection"
-      desc = node.at_xpath("Source_Collection_Description")&.text
+to_field 'collection_source_collection_description' do |record, accumulator, _c|
+  record.xpath('//classification/item').each do |node|
+    if node.at_xpath('class_name')&.text == 'collection'
+      desc = node.at_xpath('Source_Collection_Description')&.text
       accumulator << desc if desc && !desc.empty?
     end
   end
 end
 
+to_field 'subseries_description' do |record, accumulator, _c|
+  record.xpath('//classification/item').each do |node|
+    if node.at_xpath('class_name')&.text == 'subseries'
+      desc = node.at_xpath('description')&.text
+      accumulator << desc if desc && !desc.empty?
+    end
+  end
+end
+
+to_field 'series_description' do |record, accumulator, _c|
+  record.xpath('//classification/item').each do |node|
+    if node.at_xpath('class_name')&.text == 'series'
+      desc = node.at_xpath('description')&.text
+      accumulator << desc if desc && !desc.empty?
+    end
+  end
+end
 
 to_field 'collection_source_collection_id' do |record, accumulator, _c|
   collection_source_collection_id = record.xpath('/item/classification/item/Source_Collection_ID').map(&:text).first
@@ -119,7 +145,6 @@ to_field 'item_genre', extract_xpath('/item/Item_Description/genre/genre/value')
 #   accumulator.concat(item_genre)
 # end
 
-
 to_field 'item_series_title' do |record, accumulator, _c|
   item_series_title = record.xpath('/item/classification/item').map do |node|
     node.xpath('label').text if node.xpath('class_name').map(&:text).include?('series')
@@ -127,58 +152,11 @@ to_field 'item_series_title' do |record, accumulator, _c|
   accumulator.concat(item_series_title.compact)
 end
 
-to_field "item_series_description" do |record, accumulator, _c|
-  record.xpath("//classification/item").each do |node|
-    if node.at_xpath("class_name")&.text == "series"
-      desc = node.at_xpath("description")&.text
-      accumulator << desc if desc && !desc.empty?
-    end
+to_field 'item_subseries_title' do |record, accumulator, _c|
+  item_subseries_title = record.xpath('/item/classification/item').map do |node|
+    node.xpath('label').text if node.xpath('class_name').map(&:text).include?('subseries')
   end
-end
-
-to_field "item_series_wikidata_url" do |record, accumulator, _c|
-  record.xpath("//classification/item").each do |node|
-    if node.at_xpath("class_name")&.text == "series"
-      desc = node.at_xpath("wikidata_url")&.text
-      accumulator << desc if desc && !desc.empty?
-    end
-  end
-end
-
-to_field "item_series_uri" do |record, accumulator, _c|
-  record.xpath("//classification/item").each do |node|
-    if node.at_xpath("class_name")&.text == "series"
-      desc = node.at_xpath("URI")&.text
-      accumulator << desc if desc && !desc.empty?
-    end
-  end
-end
-
-to_field "item_subseries_title" do |record, accumulator, _c|
-  record.xpath("//classification/item").each do |node|
-    if node.at_xpath("class_name")&.text == "subseries"
-      desc = node.at_xpath("label")&.text
-      accumulator << desc if desc && !desc.empty?
-    end
-  end
-end
-
-to_field "item_subseries_description" do |record, accumulator, _c|
-  record.xpath("//classification/item").each do |node|
-    if node.at_xpath("class_name")&.text == "subseries"
-      desc = node.at_xpath("description")&.text
-      accumulator << desc if desc && !desc.empty?
-    end
-  end
-end
-
-to_field "item_subseries_uri" do |record, accumulator, _c|
-  record.xpath("//classification/item").each do |node|
-    if node.at_xpath("class_name")&.text == "subseries"
-      desc = node.at_xpath("URI")&.text
-      accumulator << desc if desc && !desc.empty?
-    end
-  end
+  accumulator.concat(item_subseries_title.compact)
 end
 
 to_field 'item_identifiers' do |record, accumulator, _c|

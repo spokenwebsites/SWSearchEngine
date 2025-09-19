@@ -111,19 +111,19 @@ If no backups are available locally, you can always try to run `make traject` wh
 
 Cores can be unloaded, restored, backed up using the Makefile.
 
-`make backup-core <core_name>` will create a backup of *core_name*. This backup is saved on the Solr filesystem at `/var/solr/data/<core_name>/backups/`. To keep track of the created backups, a log is available in `etl/data/cores/solr-backups-log_development.txt`. The latter only tracks backups you have ran from your machine. To get all available backups, one has to ssh into Solr server.
+`make create-snapshot <core_name>` will create a snapshot of *core_name*. This snapshot is saved on the Solr filesystem at `/var/solr/data/<core_name>/snapshots/`. To keep track of the created snapshots, a log is available in `etl/data/cores/solr-backups-log_development.txt`. The latter only tracks snapshots you have ran from your machine. To get all available snapshots, one has to ssh into Solr server.
+
+> Snapshots are not backups from which it is possible to completly restore the core. 
 
 `make delete-core` deletes the core. This operation removes the index but leaves the core folder intact. This way, core can be recreated from existing files with:
 
-`make recreate-core` restores a core and its index from local directory (inside solr filessytem).
+`make create-core <core_name>` restores a core and its index from local directory (inside solr filessytem).
  
-`make restore-core` restores a core from remaining files available  `/var/solr/data/swallow2/backups/`.
+`make restore-core <core_name> <snapshot_name>` Rolls back a core to a particular snapshot. Snapshots are located in `/var/solr/data/swallow2/snapshots/`.
 
-`make restore-core <backup_name>` restores core from existing backup.
+`make create <core_name>` creates a new core from directory found in solr sver filesystem (/var/solr/data/<core_name>/...). 
 
-`make create <core_name>` creates a new core. (Usefull for test cores or for running traject)
-
-`make traject <core_name>` creates index and updates data with swallow-data-full.xml to <core_name>. Defaults to `swallow2`.
+`make traject` creates index and updates data with swallow-data-full.xml to <core_name>. Defaults to `swallow2`. Modify `.env` files to traject data to another core.
 
 
 ### Cookbook
@@ -161,18 +161,24 @@ mkdir tmp
 exit
 ```
 
-3. (Secure) Copy local Solr `/conf` folder to created tmp folder: `scp ./solr_backend/conf $SOLR_URL/var/solr/data/tmp/conf`.
+3. Make a backup of production core: `mdir backup-xxx && cp -r swallow2/ backup-xxx`.
 
-4. Create a `tmp` core from configuration: `make create-core tmp`.
+4. (Secure) Copy local Solr `/conf` folder to created tmp folder: `scp ./solr_backend/conf $SOLR_URL/var/solr/data/tmp/conf`.
 
-5. Index latest dataset to `tmp` core: `make traject tmp`.
+5. Create a `tmp` core from configuration: `make create-core tmp`.
 
-6. Make a backup of production core: `make backup-core`.
+6. Index latest dataset to `tmp` core: `make traject tmp`.
 
 7. Make sure is up and running by accessing the ADMIN GUI. `$SOLR_URL:8983/solr/#/tmp`.
 
 8. If everything is ok, swap cores: `make swap-cores swallow2 tmp`.
 
+If things are not ok and want to restore the backup:
+
+9. Unload faulty cores: `make delete <core_name>`
+10. SSH into Solr server. Remove corresponding directory `rm -rf <core_name>`.
+11. Create a new directory and copy backup content: `mkdir swallow2 && cp backup-xxx/ swallow2/`
+12. Exit SSH and recreate core: `make create swallow2`.
 
 ## 📥 Ingesting New Metadata with Traject
 
