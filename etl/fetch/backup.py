@@ -256,7 +256,7 @@ if __name__ == '__main__':
             # 'deleteInstanceDir': 'true',
         }
 
-        response = requests.get(url, params=params)
+        response = requests.get(url, params=params, auth=auth)
         inspect(response, msg={
             'success': 'Core swallow2 has been deleted.',
             'error': 'Something went wrong when deleting the core.'
@@ -274,7 +274,8 @@ if __name__ == '__main__':
                 'action': 'SWAP',
                 'core': src_name,
                 'other': dest_name,                    
-            })
+            },
+            auth=auth)
 
         inspect(response, msg={
             'success': 'Cores were correctly swaped',
@@ -315,7 +316,7 @@ if __name__ == '__main__':
 
         print(f'\n\tReloading core {core}...')
 
-        response = requests.get(os.environ['SOLR_ADMIN_URL'])
+        response = requests.get(os.environ['SOLR_ADMIN_URL'], auth=auth)
         inspect(response, msg={
             'success': f'Core {core} reloaded successfully.',
             'error': f'ERROR: could not reload core {core}.'
