@@ -2,13 +2,11 @@ import os
 import sys
 import json
 import time
-import uuid
 import requests
 import subprocess
 from typing import Any
-
+from requests.auth import HTTPBasicAuth
 from dotenv import load_dotenv
-load_dotenv('/etl/.env.development')
 
 
 DOC_STRING = """
@@ -64,7 +62,10 @@ Commands:
     list <core>
         List available local JSON backup files for the given core.
 
-    help
+    env <development|production|test>
+        Show available environments for specified environement. Default to development.
+
+    backup-help
         Show usage.
 
 Environments:
@@ -93,8 +94,9 @@ CORE_BACKUP_PATH = '/etl/data/snapshots/'
 # Not working
 MAX_BACKUPS = 3
 
-env_mode = 'development'
+env_mode = None
 
+auth = None
 
 def inspect(response: requests.Response, msg: Any) -> bool:
     try:
@@ -143,30 +145,42 @@ def getObjectFromArgs():
     
     
 if __name__ == '__main__':
+    # Make sure all directories are created
     if not os.path.isdir(DATA_BACKUP_PATH):
         os.makedirs(DATA_BACKUP_PATH)
     if not os.path.isdir(CORE_BACKUP_PATH):
         os.makedirs(CORE_BACKUP_PATH)
 
+    # Print docs if no arguments are provided
     if len(sys.argv) == 1:
-        print('\n\tERROR: backup.py needs at least 1 argument: \n\tpython3 backup.py <create-snapshot|restore-core|delete-core|list-backups|recreate|backup|dump|restore> <[default=none]|snapshot_name> <[default=development]|production|test>')
+        print(DOC_STRING)
         exit(1)
-    elif len(sys.argv) >= 3:
-        if sys.argv[-1] == 'production' or sys.argv[-1] == 'test':
-            if os.path.isfile(f'/etl/.env.{sys.argv[-1]}'):
-                env_mode = sys.argv[-1]
-                load_dotenv(f'/etl/.env.{sys.argv[-1]}')
-            else:
-                print(f'\n\tERROR: /etl/.env.{sys.argv[-1]} could not be found.')
-                exit(0)
+
+    env_mode = 'development'
+    # Look for env 
+    if (sys.argv[-1] == 'production' or sys.argv[-1] == 'test'):
+        env_mode = sys.argv[-1]
+
+    if not os.path.isfile(f'/etl/.env.{env_mode}'):
+        print(f'\n\tERROR: /etl/.env.{env_mode} could not be found.')
+        exit(1)
+
+    load_dotenv(f'/etl/.env.{env_mode}')
+    auth = HTTPBasicAuth(os.environ['SOLR_USER'], os.environ['SOLR_PASS'])
 
     # Sets local backups logs
     logPath = f'{CORE_BACKUP_PATH}/solr-backups-log_{env_mode}.txt'
-
     t = time.localtime()
 
+
+    # Check env
+    if sys.argv[1] == 'env':
+        print(f'\n\tChecking environement variables in {env_mode} mode...\n')
+        for k in os.environ:
+            print(f'\t{k} = {os.environ[k]}')
+
     # Backup core
-    if sys.argv[1] == 'create-snapshot':
+    elif sys.argv[1] == 'create-snapshot':
         core = getCoreFromArgs()
         print(f'\n\tCreating a snapshot core {core} on {env_mode} mode...')
 
@@ -275,7 +289,6 @@ if __name__ == '__main__':
         except Exception:
             instanceDir = f'/var/solr/data/{core}' 
         
-
         print(f'\n\tCreating core {core} from {instanceDir}...')
 
         # Can create core from another
@@ -286,8 +299,12 @@ if __name__ == '__main__':
                 'name': core,
                 'instanceDir': instanceDir,
                 'config': './conf/solrconfig.xml',
-                'schema': './conf/managed-schema.xml'
-            })
+                'schema': './conf/managed-schema.xml',
+            },
+            auth=auth
+        )
+
+        
         inspect(response, msg={
             'success': f'Core {core} was correctly created.',
             'error': f'ERROR: problem creating core {core}.'
@@ -342,6 +359,7 @@ if __name__ == '__main__':
                 json.dump(docs, f, indent=2)
                 print(f'\n\tBacked up {len(docs)} documents at {fname}.')
 
+
     # Removes data. Leaves the core untouched.
     elif sys.argv[1] == 'dump':
         core = getCoreFromArgs()
@@ -395,6 +413,7 @@ if __name__ == '__main__':
         else:
             print('Data was properly restored.')
 
+        
     elif sys.argv[1] == 'list':
         dir_name = getCoreFromArgs()
         print(f'Listing available data backups from {DATA_BACKUP_PATH}{dir_name}...\n')
@@ -406,6 +425,7 @@ if __name__ == '__main__':
         for d in os.listdir(dir_name):
             print(f'\t{d}')
                     
+
     elif sys.argv[1] == 'backup-help':
         print(DOC_STRING)
     else:
