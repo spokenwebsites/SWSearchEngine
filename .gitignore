@@ -66,3 +66,5 @@ blacklight_front/lib/traject/config.
 
 .env
 .env.production
+#ignore the python virtual enviroment
+etl/fetch/venv/

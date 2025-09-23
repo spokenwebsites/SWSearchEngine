@@ -27,8 +27,8 @@ def combine_json_files(input_folder, output_file):
     print(f"Combined {len(combined_data)} items into {output_file}")
 
 # Combine all JSON files into one
-input_folder = "./data/json/"
-output_file = "./data/output/combined.json"
+input_folder = "../data/json/"
+output_file = "../data/output/combined.json"
 combine_json_files(input_folder, output_file)
 
 def read_json_files(directory):
@@ -53,6 +53,6 @@ def merge_json_to_xml(json_data, output_file):
 
     
 json_files_data = read_json_files(input_folder)
-output_file_path_XML = './data/output/swallow-data-full.xml'
+output_file_path_XML = '../data/output/swallow-data-full.xml'
 merge_json_to_xml(json_files_data, output_file_path_XML)
 
