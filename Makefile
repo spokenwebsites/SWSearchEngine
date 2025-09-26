@@ -1,4 +1,5 @@
-.PHONY: dev clean backup list dump restore delete recreate traject
+.PHONY: dev clean create-configset create-snapshot restore-core delete-core list-snapshots swap-cores create-core reload-core traject backup dump restore list backup-help env
+
 
 dev:
 	docker compose up -d --build solr && \
@@ -15,7 +16,11 @@ create-snapshot restore-core delete-core list-snapshots swap-cores create-core r
 	docker compose run --rm etl python3 ./fetch/backup.py $@ $(filter-out $@,$(MAKECMDGOALS))
 
 create-configset:
-	zip -r etl/configsets/$(filter-out $@,$(MAKECMDGOALS)).zip ./solr_backend/conf
+	echo "\tZipping current configs set from ./solr_backend/conf"
+	zip -r -j etl/data/configsets/$(filter-out $@,$(MAKECMDGOALS)).zip ./solr_backend/conf
+	curl -X POST --header "Content-Type: application/octet-stream" \
+		--data-binary etl/data/configsets/@$(filter-out $@,$(MAKECMDGOALS)).zip \
+		"http://localhost:8983/solr/admin/configs?action=UPLOAD&name=$(filter-out $@,$(MAKECMDGOALS))" 
 
 # Swallow extra args so make doesn’t error out
 %:
