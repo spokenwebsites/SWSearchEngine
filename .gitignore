@@ -68,3 +68,4 @@ blacklight_front/lib/traject/config.
 .env.production
 #ignore the python virtual enviroment
 etl/fetch/venv/
+/solr_backend/data/*
