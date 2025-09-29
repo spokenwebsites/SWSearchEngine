@@ -252,7 +252,7 @@ if __name__ == '__main__':
         params = {
             'core': core,
             'action': 'UNLOAD',
-            # 'deleteIndex': 'true',
+            'deleteIndex': 'true',
             # 'deleteInstanceDir': 'true',
         }
 
@@ -329,7 +329,11 @@ if __name__ == '__main__':
             print('\n\tAbort running traject.')
             exit(0)
 
-        subprocess.run(["traject", "-i", "xml", "-c", "./config_item.rb", "./data/output/swallow-data-full.xml"], check=True)
+        subprocess.run([
+            "traject", "-i", "xml", "-c", "./config_item.rb", 
+            "./data/output/swallow-data-full.xml", "-s",
+            'solr.url="http://127.0.0.1:8983/tmp"'
+        ], check=True)
        
          
     # Backup data

@@ -12,6 +12,9 @@ clean:
 	rm -rf ./etl/data/dumps && \
 	rm -rf ./etl/data/cores
 
+fetch:
+	docker compose run --rm etl ./fetch.sh
+
 create-snapshot restore-core delete-core list-snapshots swap-cores create-core reload-core traject backup dump restore list backup-help env:
 	docker compose run --rm etl python3 ./fetch/backup.py $@ $(filter-out $@,$(MAKECMDGOALS))
 
