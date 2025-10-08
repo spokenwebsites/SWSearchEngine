@@ -134,6 +134,13 @@ to_field 'item_series_description' do |record, accumulator, _c|
   end
 end
 
+to_field 'item_subseries_title' do |record, accumulator, _c|
+  item_subseries_title = record.xpath('/item/classification/item').map do |node|
+    node.xpath('label').text if node.xpath('class_name').map(&:text).include?('series')
+  end
+  accumulator.concat(item_subseries_title.compact)
+end
+
 to_field 'item_series_wikidata_url' do |record, accumulator, _c|
   record.xpath('//classification/item').each do |node|
     if node.at_xpath('class_name')&.text == 'series'
@@ -152,14 +159,6 @@ to_field 'item_series_uri' do |record, accumulator, _c|
   end
 end
 
-to_field 'item_subseries_title' do |record, accumulator, _c|
-  record.xpath('//classification/item').each do |node|
-    if node.at_xpath('class_name')&.text == 'subseries'
-      desc = node.at_xpath('label')&.text
-      accumulator << desc if desc && !desc.empty?
-    end
-  end
-end
 
 to_field 'item_subseries_description' do |record, accumulator, _c|
   record.xpath('//classification/item').each do |node|

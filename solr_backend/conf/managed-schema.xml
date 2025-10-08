@@ -145,7 +145,7 @@
   <field name="item_series_description" type="text_general" multiValued="true" indexed="true" stored="true"/>
   <field name="item_series_wikidata_url" type="text_general" multiValued="true" indexed="true" stored="true"/>
   <field name="item_series_uri" type="text_general" multiValued="true" indexed="true" stored="true"/>
-  <field name="item_subseries_title" type="text_general" multiValued="true" indexed="true" stored="true"/>
+  <field name="item_subseries_title" type="string" multiValued="true" indexed="true" stored="true"/>
   <field name="item_subseries_description" type="text_general" multiValued="true" indexed="true" stored="true"/>
   <field name="item_subseries_uri" type="text_general" multiValued="true" indexed="true" stored="true"/>
 

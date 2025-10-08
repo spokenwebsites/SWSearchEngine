@@ -49,7 +49,7 @@ class SolrDocument
   end
 
   def item_subseries_title
-    item_subseries_title = self['source_collection_label']
+    item_subseries_title = self['item_subseries_title']
     if item_subseries_title&.length.to_i > 0  # check if the array exists and has at least one element
 
       item_subseries_title[0]  # return the first element

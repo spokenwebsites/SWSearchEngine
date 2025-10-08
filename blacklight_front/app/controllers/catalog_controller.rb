@@ -103,6 +103,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'partnerInstitution', label: 'Institution', sort: 'alpha', limit: 10
     config.add_facet_field 'source_collection_label', label: 'Collection', sort: 'alpha', limit: 10
     config.add_facet_field 'item_series_title', label: 'Series', sort: 'alpha', limit: 10 #latest
+    config.add_facet_field 'item_subseries_title', label: 'Sub Series', sort: 'alpha', limit: 10 #latest
     config.add_facet_field 'City', label: 'Location', sort: 'alpha', limit: 10
     config.add_facet_field 'item_production_context', label: 'Production Context', sort: 'alpha', limit: 10
     config.add_facet_field 'item_genre', label: 'Genre', sort: 'alpha', limit: 10
