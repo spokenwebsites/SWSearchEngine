@@ -54,6 +54,7 @@ collection_source_collection_id
 source_collection_uri
 collection_image_url
 persistent_url
+public_access_url
 insitution_collection_item_id
 item_title
 item_title_source

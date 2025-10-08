@@ -407,7 +407,8 @@ to_field 'digital_description' do |record, accumulator, _c|
       credit: node.xpath('credit').text,
       caption: node.xpath('caption').text,
       content_type: node.xpath('content_type').text,
-      featured: node.xpath('featured').text
+      featured: node.xpath('featured').text,
+      public_access_url: node.xpath('Public_Access_URL').text
     }
   end
   accumulator.concat [digital_description.to_json.to_s]

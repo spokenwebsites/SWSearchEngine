@@ -560,11 +560,18 @@
               Content</a>
           </div>
       </dd>
-
-
-
     </div>
     <% end %>
+
+  <% if digital["public_access_url"].present? %>
+    <div class="row">
+      <dt class="subheading col-md-3">Public Access URL:</dt>
+      <dd class="col-md-9 subheading_values">
+          <a href="<%= digital["public_access_url"] %>" target="_blank"><%=  digital["public_access_url"] %></a>
+      </dd>
+    </div>
+    <% end %>
+
 
       <% if digital["file_path"].present? %>
     <div class="row">
