@@ -94,7 +94,7 @@ SOLR_URL=https://credentials:provider/...
 
 Then run the Traject service using that environment file:
 ```sh
-docker compose run --rm --env-file .env.production etl
+docker compose up  --build --rm --env-file .env.production etl
 ```
 
 ### Cleaning dev environement
@@ -193,7 +193,8 @@ The same thing happens for the Traject configration file ./etl/config_item.
 ### Cookbook
 
 To run the following command in production, make sure you add the keyword `production` so that scripts use `.env.production`
-(ie. `make create-core swallow2 production`)
+(ie. `make create-core swallow_2 swallow_2 production`)
+
 
 #### Updating production server with new data
 
@@ -232,7 +233,7 @@ exit
 
 4. (Secure) Copy local Solr `/conf` folder to created tmp folder: `scp ./solr_backend/conf $SOLR_URL/var/solr/data/tmp/conf`.
 
-5. Create a `tmp` core from configuration: `make create-core tmp`.
+5. Create a `tmp` core from configuration: `make create-core tmp tmp`.
 
 6. Index latest dataset to `tmp` core: `make traject tmp`.
 
@@ -247,7 +248,9 @@ If things are not ok and want to restore the backup:
 11. Create a new directory and copy backup content: `mkdir swallow2 && cp backup-xxx/ swallow2/`
 12. Exit SSH and recreate core: `make create swallow2`.
 
+Once the folder is uploaded through SFTP for successfully creating the core run the following command:
 
+`make create-core swallow_2025_10_22  swallow_2025_10_22  production`
 
 
 ## 📥 Ingesting New Metadata with Traject

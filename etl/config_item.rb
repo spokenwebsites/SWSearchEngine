@@ -136,7 +136,7 @@ end
 
 to_field 'item_subseries_title' do |record, accumulator, _c|
   item_subseries_title = record.xpath('/item/classification/item').map do |node|
-    node.xpath('label').text if node.xpath('class_name').map(&:text).include?('series')
+    node.xpath('label').text if node.xpath('class_name').map(&:text).include?('subseries')
   end
   accumulator.concat(item_subseries_title.compact)
 end

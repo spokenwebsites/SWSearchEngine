@@ -34,7 +34,9 @@
   </div>
   <% end %>
 
-  <% if @document['collection_source_collection_id'].present? %>
+
+    <% col_id = @document['collection_source_collection_id']&.first %>
+    <% if col_id.present? && col_id.strip != "" %>
      <div class="row">
      <dt class="subheading col-md-3">Source Collection ID:</dt>
      <dd class="col-md-9 subheading_values">
@@ -62,16 +64,17 @@
    </div>
    <% end %>
 
-  <% if @document['source_collection_uri'].present? %>
-     <div class="row">
-     <dt class="subheading col-md-3">Source Collection URI:</dt>
-     <dd class="col-md-9 subheading_values">
-           <%= @document['source_collection_uri'].first %>
-     </dd>
-   </div>
-   <% end %>
+  <% uri = @document['source_collection_uri']&.first %>
+  <% if uri.present? && uri.strip != "" %>
+    <div class="row">
+      <dt class="subheading col-md-3">Source Collection URI:</dt>
+      <dd class="col-md-9 subheading_values"><%= uri %></dd>
+    </div>
+  <% end %>
 
-  <% if @document['collection_image_url'].present? %>
+  
+  <% img_url = @document['collection_image_url']&.first %>
+  <% if img_url.present? && img_url.strip != "" %>
      <div class="row">
      <dt class="subheading col-md-3">Source Collection Image URL:</dt>
      <dd class="col-md-9 subheading_values">
@@ -205,15 +208,17 @@
     </dd>
   </div>
    <% end %>
-   <% if @document.item_identifiers.present? %>
+
+<% if @document.item_identifiers.present? && !["[]", "[ ]", ""].include?(@document.item_identifiers.strip) %>
   <div class="row">
     <dt class="subheading col-md-3">Identifiers:</dt>
     <dd class="col-md-9 subheading_values">
       <%= @document.item_identifiers %>
     </dd>
   </div>
-  <% end %>
   <hr class="solid-line">
+<% end %>
+<hr class="solid-line">
 
 
 <!--Rights-->
