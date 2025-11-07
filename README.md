@@ -8,8 +8,8 @@ This search engine serves as a discovery layer for the database, offering an int
 
 ## 🧰 Technology Stack
 
-- **Solr** – Backend search engine for indexing and querying metadata
-- **Blacklight** – Ruby on Rails-based frontend for building search interfaces  
+- **Solr (version 9)** – Backend search engine for indexing and querying metadata
+- **Blacklight (version 8)** – Ruby on Rails-based frontend for building search interfaces  
   GitHub: [projectblacklight/blacklight](https://github.com/projectblacklight/blacklight)
 - **Docker** – Containerized environment for local setup and deployment
 - **Traject** – Tool for ingesting metadata into Solr
