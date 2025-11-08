@@ -19,66 +19,132 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
+        // Helper function to format JSON arrays for text output
+        function formatJsonForText(jsonString, sectionName) {
+            try {
+                var data = JSON.parse(jsonString);
+                if (!Array.isArray(data) || data.length === 0) {
+                    return sectionName + ': N/A\n';
+                }
+                var result = sectionName + ':\n';
+                data.forEach(function(item, index) {
+                    result += '  [' + (index + 1) + ']\n';
+                    for (var key in item) {
+                        if (item.hasOwnProperty(key)) {
+                            var value = item[key];
+                            if (Array.isArray(value)) {
+                                value = value.join(', ');
+                            }
+                            result += '    ' + key + ': ' + (value || 'N/A') + '\n';
+                        }
+                    }
+                    if (index < data.length - 1) {
+                        result += '\n';
+                    }
+                });
+                return result;
+            } catch (e) {
+                return sectionName + ': ' + jsonString + '\n';
+            }
+        }
 
         var combinedData = {
             "Classification": {
-                "partner_institution": <%= raw @document.partnerInstitution.to_json %>,
-                "source_collection_label":<%= raw @document.source_collection_label.to_json %>,
-                "series":<%= raw @document.item_series_title.to_json %>,
-                "sub_series":<%= raw @document.item_subseries_title.to_json %>,
+                "swallow_id": <%= raw (@document.id || "").to_json %>,
+                "partner_institution": <%= raw (@document.partnerInstitution || "").to_json %>,
+                "source_collection_label": <%= raw (@document.source_collection_label || "").to_json %>,
+                "source_collection_id": <%= raw (@document['collection_source_collection_id']&.first || "").to_json %>,
+                "source_collection_description": <%= raw (@document['collection_source_collection_description']&.first || "").to_json %>,
+                "source_collection_contributing_unit": <%= raw (@document['collection_contributing_unit']&.first || "").to_json %>,
+                "source_collection_uri": <%= raw (@document['source_collection_uri']&.first || "").to_json %>,
+                "source_collection_image_url": <%= raw (@document['collection_image_url']&.first || "").to_json %>,
+                "series": <%= raw (@document.item_series_title || "").to_json %>,
+                "series_description": <%= raw (@document['item_series_description']&.first || "").to_json %>,
+                "series_wikidata_url": <%= raw (@document['item_series_wikidata_url']&.first || "").to_json %>,
+                "series_uri": <%= raw (@document['item_series_uri']&.first || "").to_json %>,
+                "sub_series": <%= raw (@document.item_subseries_title || "").to_json %>,
+                "sub_series_description": <%= raw (@document['item_subseries_description']&.first || "").to_json %>,
+                "sub_series_uri": <%= raw (@document['item_subseries_uri']&.first || "").to_json %>
             },
             "item_description": {
-                "title":<%= raw @document.item_title.to_json %>,
-                "title_source":<%= raw @document.item_title_source.to_json %>,
-                "title_note":<%= raw @document.item_title_note.to_json %>,
-                "language":<%= raw @document.item_language.to_json %>,
-                "production_context":<%= raw @document.item_production_context.to_json %>,
-                "genre":<%= raw @document.item_genre.to_json %>,
-                "persistent_url":<%= raw @document.persistent_url.to_json %>,
-
-                "Identifiers":<%= raw @document.item_identifiers.to_json %>,
+                "title": <%= raw (@document.item_title || "").to_json %>,
+                "title_source": <%= raw (@document.item_title_source || "").to_json %>,
+                "title_note": <%= raw (@document.item_title_note || "").to_json %>,
+                "language": <%= raw (@document.item_language || "").to_json %>,
+                "production_context": <%= raw (@document.item_production_context || "").to_json %>,
+                "genre": <%= raw (@document.item_genre || "").to_json %>,
+                "persistent_url": <%= raw (@document.persistent_url || "").to_json %>,
+                "Identifiers": <%= raw (@document.item_identifiers || "").to_json %>
             },
             "rights": {
-                "rights":<%= raw @document.rights.to_json %>,
-                "license":<%= raw @document.rights_license.to_json %>,
-                "notes":<%= raw @document.rights_notes.to_json %>,
+                "rights": <%= raw (@document.rights || "").to_json %>,
+                "license": <%= raw (@document.rights_license || "").to_json %>,
+                "notes": <%= raw (@document.rights_notes || "").to_json %>
             },
-
-            "creators": <%= raw @document.creators.to_json %>,
-            "contributors": <%= raw @document.contributors.to_json %>,
-            "material_description": <%= raw @document.material_description.to_json %>,
-            "digital_file_description": <%= raw @document.digital_description.to_json %>,
-            "Dates": <%= raw @document.dates.to_json %>,
-            "location": <%= raw @document.location.to_json %>,
-            "content": <%= raw @document.contents.to_json %>,
-            "notes": <%= raw @document.notes.to_json %>,
-            "related_works": <%= raw @document.related_works.to_json %>,
-
+            "creators": <%= raw (@document.creators || "[]").to_json %>,
+            "contributors": <%= raw (@document.contributors || "[]").to_json %>,
+            "material_description": <%= raw (@document.material_description || "[]").to_json %>,
+            "digital_file_description": <%= raw (@document.digital_description || "[]").to_json %>,
+            "Dates": <%= raw (@document.dates || "[]").to_json %>,
+            "location": <%= raw (@document.location || "[]").to_json %>,
+            "content": <%= raw (@document.contents || "").to_json %>,
+            "content_notes": <%= raw (@document.content_notes || "").to_json %>,
+            "notes": <%= raw (@document.notes || "[]").to_json %>,
+            "related_works": <%= raw (@document.related_works || "[]").to_json %>
         };
 
-        var textData = 'Classification: ' +
-            '\nPartner Institution<%= raw @document.partnerInstitution.to_json %>' +
-            '\nSource Collection Label: ' +
-            '<%= raw @document.source_collection_label.to_json %>' +
-            '\nSeries: ' +
-            '<%= raw @document.item_series_title.to_json %>' +
-            '\nSub Series: ' +
-            '<%= raw @document.item_subseries_title.to_json %>' +
-            '\n--------------------------------- ' +
-            '\nItem Description: ' +
-            '\nTitle:<%= raw @document.item_title.to_json %>' +
-            '\nTitle Source:<%= raw @document.item_title_source.to_json %>' +
-            <!--        '\nTitle Note:<%= raw @document.item_title_note.to_json %>' +-->
-            '\nLanguage:<%= raw @document.item_language.to_json %>' +
-            '\nProduction Context:<%= raw @document.item_production_context.to_json %>' +
-            '\nGenre:<%= raw @document.item_genre.to_json %>' +
-            '\nPersistent URL:<%= raw @document.persistent_url.to_json %>' +
-            '\n--------------------------------- ' +
-            '\nRights: ' +
-            '\nRights:<%= raw @document.rights.to_json %>' +
-            '\nLicense:<%= raw @document.rights.to_json %>' +
-            <!--                '\nNotes:<%= raw @document.rights_notes.to_json %>' +-->
-            '\n--------------------------------- '
+        // Build text data with all fields
+        var textData = 'CLASSIFICATION\n' +
+            'Swallow ID: ' + (<%= raw (@document.id || "").to_json %> || 'N/A') + '\n' +
+            'Partner Institution: ' + (<%= raw (@document.partnerInstitution || "").to_json %> || 'N/A') + '\n' +
+            'Source Collection Title: ' + (<%= raw (@document.source_collection_label || "").to_json %> || 'N/A') + '\n' +
+            'Source Collection ID: ' + (<%= raw (@document['collection_source_collection_id']&.first || "").to_json %> || 'N/A') + '\n' +
+            'Source Collection Description: ' + (<%= raw (@document['collection_source_collection_description']&.first || "").to_json %> || 'N/A') + '\n' +
+            'Source Collection Contributing Unit: ' + (<%= raw (@document['collection_contributing_unit']&.first || "").to_json %> || 'N/A') + '\n' +
+            'Source Collection URI: ' + (<%= raw (@document['source_collection_uri']&.first || "").to_json %> || 'N/A') + '\n' +
+            'Source Collection Image URL: ' + (<%= raw (@document['collection_image_url']&.first || "").to_json %> || 'N/A') + '\n' +
+            'Series Title: ' + (<%= raw (@document.item_series_title || "").to_json %> || 'N/A') + '\n' +
+            'Series Description: ' + (<%= raw (@document['item_series_description']&.first || "").to_json %> || 'N/A') + '\n' +
+            'Series Wikidata URL: ' + (<%= raw (@document['item_series_wikidata_url']&.first || "").to_json %> || 'N/A') + '\n' +
+            'Series URI: ' + (<%= raw (@document['item_series_uri']&.first || "").to_json %> || 'N/A') + '\n' +
+            'Sub Series Title: ' + (<%= raw (@document.item_subseries_title || "").to_json %> || 'N/A') + '\n' +
+            'Sub Series Description: ' + (<%= raw (@document['item_subseries_description']&.first || "").to_json %> || 'N/A') + '\n' +
+            'Sub Series URI: ' + (<%= raw (@document['item_subseries_uri']&.first || "").to_json %> || 'N/A') + '\n' +
+            '\n---------------------------------\n' +
+            'ITEM DESCRIPTION\n' +
+            'Title: ' + (<%= raw (@document.item_title || "").to_json %> || 'N/A') + '\n' +
+            'Title Source: ' + (<%= raw (@document.item_title_source || "").to_json %> || 'N/A') + '\n' +
+            'Title Note: ' + (<%= raw (@document.item_title_note || "").to_json %> || 'N/A') + '\n' +
+            'Language: ' + (<%= raw (@document.item_language || "").to_json %> || 'N/A') + '\n' +
+            'Production Context: ' + (<%= raw (@document.item_production_context || "").to_json %> || 'N/A') + '\n' +
+            'Genre: ' + (<%= raw (@document.item_genre || "").to_json %> || 'N/A') + '\n' +
+            'Persistent URL: ' + (<%= raw (@document.persistent_url || "").to_json %> || 'N/A') + '\n' +
+            'Identifiers: ' + (<%= raw (@document.item_identifiers || "").to_json %> || 'N/A') + '\n' +
+            '\n---------------------------------\n' +
+            'RIGHTS\n' +
+            'Rights: ' + (<%= raw (@document.rights || "").to_json %> || 'N/A') + '\n' +
+            'License: ' + (<%= raw (@document.rights_license || "").to_json %> || 'N/A') + '\n' +
+            'Notes: ' + (<%= raw (@document.rights_notes || "").to_json %> || 'N/A') + '\n' +
+            '\n---------------------------------\n' +
+            formatJsonForText(<%= raw (@document.creators || "[]").inspect %>, 'CREATORS') +
+            '\n---------------------------------\n' +
+            formatJsonForText(<%= raw (@document.contributors || "[]").inspect %>, 'CONTRIBUTORS') +
+            '\n---------------------------------\n' +
+            formatJsonForText(<%= raw (@document.material_description || "[]").inspect %>, 'MATERIAL DESCRIPTION') +
+            '\n---------------------------------\n' +
+            formatJsonForText(<%= raw (@document.digital_description || "[]").inspect %>, 'DIGITAL FILE DESCRIPTION') +
+            '\n---------------------------------\n' +
+            formatJsonForText(<%= raw (@document.dates || "[]").inspect %>, 'DATES') +
+            '\n---------------------------------\n' +
+            formatJsonForText(<%= raw (@document.location || "[]").inspect %>, 'LOCATION') +
+            '\n---------------------------------\n' +
+            'CONTENT\n' +
+            'Contents: ' + (<%= raw (@document.contents || "").to_json %> || 'N/A') + '\n' +
+            'Content Notes: ' + (<%= raw (@document.content_notes || "").to_json %> || 'N/A') + '\n' +
+            '\n---------------------------------\n' +
+            formatJsonForText(<%= raw (@document.notes || "[]").inspect %>, 'NOTES') +
+            '\n---------------------------------\n' +
+            formatJsonForText(<%= raw (@document.related_works || "[]").inspect %>, 'RELATED WORKS')
         ;
             var content = '';
 
