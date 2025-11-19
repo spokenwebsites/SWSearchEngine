@@ -149,6 +149,18 @@
   <hr class="solid-line">
 
   <!--Item Descirption-->
+<% 
+  # Check if any ITEM DESCRIPTION field has content
+  has_item_description_data = @document.item_title.present? ||
+    @document.item_title_source.present? ||
+    @document.item_title_note.present? ||
+    @document.item_language.present? ||
+    @document.item_production_context.present? ||
+    @document.item_genre.present? ||
+    @document.persistent_url.present? ||
+    (@document.item_identifiers.present? && !["[]", "[ ]", ""].include?(@document.item_identifiers.strip))
+%>
+<% if has_item_description_data %>
   <h3 class="separator_head">ITEM DESCRIPTION</h3>
   <% if @document.item_title.present? %>
   <div class="row">
@@ -219,10 +231,17 @@
   <hr class="solid-line">
 <% end %>
 <hr class="solid-line">
+<% end %>
 
 
 <!--Rights-->
-
+<% 
+  # Check if any Rights field has content
+  has_rights_data = @document.rights.present? ||
+    @document.rights_license.present? ||
+    @document.rights_notes.present?
+%>
+<% if has_rights_data %>
   <h3 class="separator_head">Rights</h3>
 
   <% if @document.rights.present? %>
@@ -260,10 +279,16 @@
   <%# end %>
 
   <hr class="solid-line">
+<% end %>
 
 <!--Creators-->
+<% creators = JSON.parse(@document.creators || "[]") %>
+<% has_creators = creators.any? { |c|
+  c["name"].present? || c["dates"].present? || c["url"].present? || c["role"].present? || c["nation"].present? || c["notes"].present?
+} %>
+<% if has_creators %>
   <h3 class="separator_head">CREATORS</h3>
-  <% JSON.parse(@document.creators).each do |creator| %>
+  <% creators.each do |creator| %>
 
   <% if creator["name"].present? %>
   <div class="row">
@@ -317,11 +342,16 @@
     <% end %>
     <hr class="solid-line">
 <% end %>
+<% end %>
 
 <!--Contributors-->
+<% contributors = JSON.parse(@document.contributors || "[]") %>
+<% has_contributors = contributors.any? { |c|
+  c["name"].present? || c["dates"].present? || c["url"].present? || c["role"].present? || c["nation"].present? || c["notes"].present?
+} %>
+<% if has_contributors %>
   <h3 class="separator_head">CONTRIBUTORS</h3>
-  <%  JSON.parse(@document.contributors) %>
-  <% JSON.parse(@document.contributors).each do |contributor| %>
+  <% contributors.each do |contributor| %>
 
   <% if contributor["name"].present? %>
     <div class="row">
@@ -378,10 +408,20 @@
     <% end %>
     <hr class="solid-line">
   <% end %>
+<% end %>
 
 <!--  Material Description-->
+<% materials = JSON.parse(@document.material_description || "[]") %>
+<% has_materials = materials.any? { |m|
+  m["image"].present? || m["recording_type"].present? || m["AV_types"].present? || m["material_designation"].present? ||
+  m["physical_composition"].present? || m["storage_capacity"].present? || m["extent"].present? || m["side"].present? ||
+  m["playing_speed"].present? || m["track_configuration"].present? || m["playback_mode"].present? || m["equalization"].present? ||
+  m["generations"].present? || m["tape_brand"].present? || m["sound_quality"].present? || m["physical_condition"].present? ||
+  m["Conservation"].present? || m["other_physical_description"].present? || m["Accompanying Material"].present? || m["other"].present?
+} %>
+<% if has_materials %>
   <h3 class="separator_head">MATERIAL DESCRIPTION</h3>
-  <% JSON.parse(@document.material_description).each do |material| %>
+  <% materials.each do |material| %>
 
   <% if material["image"].present? %>
     <div class="row">
@@ -549,10 +589,20 @@
     <% end %>
     <hr class="solid-line">
   <% end %>
+<% end %>
 
-  <h3 class="separator_head">DIGITAL FILE DESCRIPTION</h3>
   <%  if @document.digital_description.present? %>
-  <% JSON.parse(@document.digital_description).each do |digital| %>
+  <% digitals = JSON.parse(@document.digital_description || "[]") %>
+  <% has_digitals = digitals.any? { |d|
+    d["file_url"].present? || d["public_access_url"].present? || d["file_path"].present? || d["Filename"].present? ||
+    d["channel_field"].present? || d["sample_rate"].present? || d["precision"].present? || d["duration"].present? ||
+    d["size"].present? || d["bitrate"].present? || d["encoding"].present? || d["contents"].present? ||
+    d["notes"].present? || d["title"].present? || d["caption"].present? || d["credit"].present? ||
+    d["content_type"].present? || d["featured"].present?
+  } %>
+  <% if has_digitals %>
+  <h3 class="separator_head">DIGITAL FILE DESCRIPTION</h3>
+  <% digitals.each do |digital| %>
 
   <% if digital["file_url"].present? %>
     <div class="row">
@@ -717,8 +767,14 @@
     <hr class="solid-line">
 <%end %>
 <% end %>
+<% end %>
+  <% dates = JSON.parse(@document.dates || "[]") %>
+  <% has_dates = dates.any? { |d|
+    d["date"].present? || d["type"].present? || d["source"].present? || d["notes"].present?
+  } %>
+  <% if has_dates %>
   <h3 class="separator_head">Dates</h3>
-  <% JSON.parse(@document.dates).each do |date| %>
+  <% dates.each do |date| %>
 
   <% if date["date"].present? %>
     <div class="row">
@@ -755,9 +811,15 @@
 
     <hr class="solid-line">
 <%end %>
+<% end %>
 
+  <% locations = JSON.parse(@document.location || "[]") %>
+  <% has_locations = locations.any? { |l|
+    l["address"].present? || l["venue"].present? || l["latitude"].present? || l["longitude"].present? || l["url"].present? || l["notes"].present?
+  } %>
+  <% if has_locations %>
   <h3 class="separator_head">LOCATION</h3>
-  <% JSON.parse(@document.location).each do |loc| %>
+  <% locations.each do |loc| %>
   <% if loc["address"].present? %>
     <div class="row">
       <dt class="subheading col-md-3">Address:</dt>
@@ -810,8 +872,14 @@
 
     <hr class="solid-line">
   <%end %>
+<% end %>
 
 <!--  content-->
+<% 
+  # Check if any CONTENT field has content
+  has_content_data = @document.contents.present? || @document.content_notes.present?
+%>
+<% if has_content_data %>
   <h3 class="separator_head">CONTENT</h3>
 
   <% if @document.contents.present? %>
@@ -839,11 +907,17 @@
   <% end %>
 
   <hr class="solid-line">
+<% end %>
 
 <!--  Notes-->
-  <h3 class="separator_head">NOTES</h3>
   <% if @document.notes.present? %>
-  <% JSON.parse(@document.notes).each do |note| %>
+  <% notes = JSON.parse(@document.notes || "[]") %>
+  <% has_notes = notes.any? { |n|
+    n["type"].present? || n["note"].present?
+  } %>
+  <% if has_notes %>
+  <h3 class="separator_head">NOTES</h3>
+  <% notes.each do |note| %>
 
   <% if note["type"].present? %>
     <div class="row">
@@ -864,32 +938,41 @@
   <% end %>
     <hr class="solid-line">
    <% end %>
+<% end %>
 
-<!--Related works-->
-  <h3 class="separator_head">RELATED WORKS</h3>
-  <% JSON.parse(@document.related_works).each do |related_work| %>
-
-  <% if related_work["citation"].present? %>
-    <div class="row">
-      <dt class="subheading col-md-3">Citation:</dt>
-      <dd class="col-md-9 subheading_values">
-        <%= related_work["citation"]%>
-      </dd>
-    </div>
-    <% end %>
+<% related_works = JSON.parse(@document.related_works || "[]") %>
+<% has_related_works = related_works.any? { |rw|
+  rw["citation"].present? || rw["url"].present?
+} %>
+ 
+<% if has_related_works %>
+<h3 class="separator_head">RELATED WORKS</h3>
+ 
+  <% related_works.each do |related_work| %>
+ 
+    <% if related_work["citation"].present? %>
+<div class="row">
+<dt class="subheading col-md-3">Citation:</dt>
+<dd class="col-md-9 subheading_values">
+<%= related_work["citation"]%>
+</dd>
+</div>
+<% end %>
+ 
     <% if related_work["url"].present? %>
-    <div class="row">
-      <dt class="subheading col-md-3">URL:</dt>
-      <dd class="col-md-9 subheading_values">
-
-        <a href="<%= related_work["url"] %>" target="_blank"><%=  related_work["url"] %></a>
-
-      </dd>
-    </div>
-    <% end %>
-
+<div class="row">
+<dt class="subheading col-md-3">URL:</dt>
+<dd class="col-md-9 subheading_values">
+<a href="<%= related_work["url"] %>" target="_blank"><%=  related_work["url"] %></a>
+</dd>
+</div>
+<% end %>
+ 
     <hr class="solid-line">
-  <% end %>
+<% end %>
+<% end %>
+
+
 
 </div>
 
