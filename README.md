@@ -6,7 +6,7 @@ This search engine serves as a discovery layer for the database, offering an int
 
 This repository contains the Dockerized source code for the search engine.
 
-The production version of the search engine is available at: https://seach.spokenweb.ca/
+The production version of the search engine is available at: [https://search.spokenweb.ca/](https://search.spokenweb.ca/)
 
 ---
 
