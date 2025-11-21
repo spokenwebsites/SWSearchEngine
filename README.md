@@ -4,6 +4,10 @@ The **SpokenWeb Search Engine** is a tool that enables users to explore metadata
 
 This search engine serves as a discovery layer for the database, offering an intuitive web interface and search functionality powered by Solr and Blacklight.
 
+This repository contains the Dockerized source code for the search engine.
+
+The production version of the search engine is available at: https://seach.spokenweb.ca/
+
 ---
 
 ## 🧰 Technology Stack
