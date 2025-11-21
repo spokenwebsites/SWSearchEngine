@@ -16,7 +16,7 @@ The production version of the search engine is available at: [https://search.spo
 - **Blacklight (version 8)** – Ruby on Rails-based frontend for building search interfaces  
   GitHub: [projectblacklight/blacklight](https://github.com/projectblacklight/blacklight)
 - **Docker** – Containerized environment for local setup and deployment
-- **Traject** – Tool for ingesting metadata into Solr
+- **Traject (version 3.8.1)** – Tool for ingesting metadata into Solr (https://github.com/traject/traject)
 - **Python** - For the ETL pipeline
 
 ---
