@@ -290,3 +290,7 @@ This project is licensed under the MIT License unless otherwise stated.
 ### 📬 Contact
 - For questions or collaboration inquiries, please [reach out here.](https://spokenweb.ca/about-us/get-involved/)
 - For feedback or technical difficulties, fill out [this ticketing form.](https://forms.gle/gFEpqsMuerJ5TLSt5)
+
+### Zenodo 
+ [![DOI](https://zenodo.org/badge/899110699.svg)](https://doi.org/10.5281/zenodo.17705607)
+
