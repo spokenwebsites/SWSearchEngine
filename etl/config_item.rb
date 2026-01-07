@@ -206,7 +206,7 @@ to_field 'creators' do |record, accumulator, _c|
       dates: node.xpath('dates').text,
       notes: node.xpath('notes').text,
       nation: node.xpath('nation/nation/value').map(&:text),
-      role: node.xpath('role/role/value').map(&:text)
+      role: node.xpath('role/item/value').map(&:text)
     }
   end
   accumulator.concat [creator_node.to_json.to_s]
@@ -228,7 +228,7 @@ to_field 'contributors' do |record, accumulator, _c|
       dates: node.xpath('dates').text,
       notes: node.xpath('notes').text,
       nation: node.xpath('nation/nation/value').map(&:text),
-      role: node.xpath('role/role/value').map(&:text)
+      role: node.xpath('role/item/value').map(&:text)
     }
   end
   accumulator.concat [contributors.to_json.to_s]
@@ -237,70 +237,70 @@ end
 # ALL THE PERFORMERS FOR A PARTICULAR EVENT
 to_field 'performer_name' do |record, accumulator, _c|
   performers = record.xpath('/item/Contributors/item').map do |node|
-    node.xpath('name').text if node.xpath('role/role/value').map(&:text).include?('Performer')
+    node.xpath('name').text if node.xpath('role/item/value').map(&:text).include?('Performer')
   end
   accumulator.concat(performers.compact)
 end
 
 to_field 'author_name' do |record, accumulator, _c|
   performers = record.xpath('/item/Contributors/item').map do |node|
-    node.xpath('name').text if node.xpath('role/role/value').map(&:text).include?('Author')
+    node.xpath('name').text if node.xpath('role/item/value').map(&:text).include?('Author')
   end
   accumulator.concat(performers.compact)
 end
 
 to_field 'Presenter_name' do |record, accumulator, _c|
   performers = record.xpath('/item/Contributors/item').map do |node|
-    node.xpath('name').text if node.xpath('role/role/value').map(&:text).include?('Presenter')
+    node.xpath('name').text if node.xpath('role/item/value').map(&:text).include?('Presenter')
   end
   accumulator.concat(performers.compact)
 end
 
 to_field 'Interviewer_name' do |record, accumulator, _c|
   performers = record.xpath('/item/Contributors/item').map do |node|
-    node.xpath('name').text if node.xpath('role/role/value').map(&:text).include?('Interviewer')
+    node.xpath('name').text if node.xpath('role/item/value').map(&:text).include?('Interviewer')
   end
   accumulator.concat(performers.compact)
 end
 
 to_field 'Producer_name' do |record, accumulator, _c|
   performers = record.xpath('/item/Contributors/item').map do |node|
-    node.xpath('name').text if node.xpath('role/role/value').map(&:text).include?('Producer')
+    node.xpath('name').text if node.xpath('role/item/value').map(&:text).include?('Producer')
   end
   accumulator.concat(performers.compact)
 end
 
 to_field 'Recordist_name' do |record, accumulator, _c|
   performers = record.xpath('/item/Contributors/item').map do |node|
-    node.xpath('name').text if node.xpath('role/role/value').map(&:text).include?('Recordist')
+    node.xpath('name').text if node.xpath('role/item/value').map(&:text).include?('Recordist')
   end
   accumulator.concat(performers.compact)
 end
 
 to_field 'Series_organizer_name' do |record, accumulator, _c|
   performers = record.xpath('/item/Contributors/item').map do |node|
-    node.xpath('name').text if node.xpath('role/role/value').map(&:text).include?('Series organizer')
+    node.xpath('name').text if node.xpath('role/item/value').map(&:text).include?('Series organizer')
   end
   accumulator.concat(performers.compact)
 end
 
 to_field 'Reader_name' do |record, accumulator, _c|
   performers = record.xpath('/item/Contributors/item').map do |node|
-    node.xpath('name').text if node.xpath('role/role/value').map(&:text).include?('Reader')
+    node.xpath('name').text if node.xpath('role/item/value').map(&:text).include?('Reader')
   end
   accumulator.concat(performers.compact)
 end
 
 to_field 'Speaker_name' do |record, accumulator, _c|
   performers = record.xpath('/item/Contributors/item').map do |node|
-    node.xpath('name').text if node.xpath('role/role/value').map(&:text).include?('Speaker')
+    node.xpath('name').text if node.xpath('role/item/value').map(&:text).include?('Speaker')
   end
   accumulator.concat(performers.compact)
 end
 
 to_field 'Storyteller' do |record, accumulator, _c|
   performers = record.xpath('/item/Contributors/item').map do |node|
-    node.xpath('name').text if node.xpath('role/role/value').map(&:text).include?('Storyteller')
+    node.xpath('name').text if node.xpath('role/item/value').map(&:text).include?('Storyteller')
   end
   accumulator.concat(performers.compact)
 end

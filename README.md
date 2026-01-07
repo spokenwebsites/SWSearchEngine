@@ -254,7 +254,7 @@ If things are not ok and want to restore the backup:
 
 Once the folder is uploaded through SFTP for successfully creating the core run the following command:
 
-`make create-core swallow_2025_10_22  swallow_2025_10_22  production`
+`make create-core swallow_2025_10_22 swallow_2025_10_22  production`
 
 
 ## 📥 Ingesting New Metadata with Traject

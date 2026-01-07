@@ -318,9 +318,7 @@
     <div class="row">
       <dt class="subheading col-md-3">Role:</dt>
       <dd class="col-md-9 subheading_values">
-      <% creator["role"].each_with_index do |role, index| %>
-        "<%= role %>"<%= ',' unless index == creator["role"].length - 1 %>
-        <%end %>
+        <%= creator["role"].join(', ') %>
       </dd>
     </div>
     <% end %>
@@ -382,9 +380,7 @@
     <div class="row">
       <dt class="subheading col-md-3">Role:</dt>
       <dd class="col-md-9 subheading_values">
-      <% contributor["role"].each_with_index do |role, index| %>
-        "<%= role %>"<%= ',' unless index == contributor["role"].length - 1 %>
-        <%end %>
+        <%= contributor["role"].join(', ') %>
       </dd>
     </div>
     <% end %>

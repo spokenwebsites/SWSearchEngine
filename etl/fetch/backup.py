@@ -63,7 +63,7 @@ Commands:
         List available local JSON backup files for the given core.
 
     env <development|production|test>
-        Show available environments for specified environement. Default to development.
+        Show available environments for specified environment. Default to development.
 
     backup-help
         Show usage.
@@ -100,7 +100,7 @@ auth = None
 
 def inspect(response: requests.Response, msg: Any) -> bool:
     try:
-        if not response.status_code == 404:
+        if response.status_code != 404:
             data = response.json()
             if data.get('responseHeader', {}).get('status') == 0:
                 print(f"\n\t{msg['success']}")
@@ -175,7 +175,7 @@ if __name__ == '__main__':
 
     # Check env
     if sys.argv[1] == 'env':
-        print(f'\n\tChecking environement variables in {env_mode} mode...\n')
+        print(f'\n\tChecking environment variables in {env_mode} mode...\n')
         for k in os.environ:
             print(f'\t{k} = {os.environ[k]}')
 
@@ -258,8 +258,8 @@ if __name__ == '__main__':
 
         response = requests.get(url, params=params, auth=auth)
         inspect(response, msg={
-            'success': 'Core swallow2 has been deleted.',
-            'error': 'Something went wrong when deleting the core.'
+            'success': f'Core {core} has been deleted.',
+            'error': f'Something went wrong when deleting core {core}.'
         })
 
     # Rename core
@@ -267,7 +267,7 @@ if __name__ == '__main__':
         src_name = getCoreFromArgs()
         dest_name = getObjectFromArgs()
 
-        proceed(f'Swaping cores {src_name} and {dest_name}')
+        proceed(f'Swapping cores {src_name} and {dest_name}')
 
         response = requests.get(os.environ['SOLR_ADMIN_URL'],
             params={
@@ -278,13 +278,13 @@ if __name__ == '__main__':
             auth=auth)
 
         inspect(response, msg={
-            'success': 'Cores were correctly swaped',
-            'error': 'ERROR: problem while swiping cores.'
+            'success': 'Cores were correctly swapped',
+            'error': 'ERROR: problem while swapping cores.'
         })            
 
     elif sys.argv[1] == 'create-core':
         core = getCoreFromArgs()
-        isntanceDir = None
+        instanceDir = None
         try:
             instanceDir = getObjectFromArgs()
         except Exception:
@@ -316,23 +316,29 @@ if __name__ == '__main__':
 
         print(f'\n\tReloading core {core}...')
 
-        response = requests.get(os.environ['SOLR_ADMIN_URL'], auth=auth)
+        url = os.environ['SOLR_ADMIN_URL']
+        params = {
+            'action': 'RELOAD',
+            'core': core
+        }
+        response = requests.get(url, params=params, auth=auth)
         inspect(response, msg={
             'success': f'Core {core} reloaded successfully.',
             'error': f'ERROR: could not reload core {core}.'
         })
 
     elif sys.argv[1] == 'traject':
-        proceed = input(f"\n\t About to traject data to {os.environ['TRAJECT_URL']}... Proceed [y/n]?")
+        traject_url = os.environ.get('TRAJECT_URL', 'http://solr:8983/solr/swallow2/')
+        user_input = input(f"\n\t About to traject data to {traject_url}... Proceed [y/n]?")
 
-        if not (proceed == 'y' or proceed == 'Y'):
+        if not (user_input == 'y' or user_input == 'Y'):
             print('\n\tAbort running traject.')
             exit(0)
 
         subprocess.run([
             "traject", "-i", "xml", "-c", "./config_item.rb", 
             "./data/output/swallow-data-full.xml", "-s",
-            'solr.url="http://127.0.0.1:8983/tmp"'
+            f'solr.url="{traject_url}"'
         ], check=True)
        
          
@@ -343,7 +349,7 @@ if __name__ == '__main__':
         if not os.path.isdir(dir):
             os.makedirs(dir)
 
-        print(f"\n\tBackuping data from {core}...")
+        print(f"\n\tBacking up data from {core}...")
 
         fname = dir + '/dump.' + time.strftime("%Y-%m-%d_%H-%M-%S", t) + '.json'
 
@@ -391,15 +397,24 @@ if __name__ == '__main__':
         
         print(f'Restoring {core} from dump {fname}...')
 
-        docs = None
-        with open(DATA_BACKUP_PATH + fname) as f:
-            docs = json.load(f)
+        file_path = os.path.join(DATA_BACKUP_PATH, fname)
+        if not os.path.isfile(file_path):
+            print(f'\n\tERROR: Backup file {file_path} not found.')
+            exit(1)
 
-            # Removes _version_ field if present
-            # Avoids version conflict when restoring
-            for d in docs:
-                d.pop("_version_", None)
-                d.pop("score", None)
+        docs = None
+        try:
+            with open(file_path, 'r') as f:
+                docs = json.load(f)
+        except (json.JSONDecodeError, IOError) as e:
+            print(f'\n\tERROR: Could not read backup file {file_path}: {e}')
+            exit(1)
+
+        # Removes _version_ field if present
+        # Avoids version conflict when restoring
+        for d in docs:
+            d.pop("_version_", None)
+            d.pop("score", None)
 
         url = os.environ['SOLR_BASE'] + f'/{core}' + '/update'
         response = requests.post(url,
@@ -409,7 +424,8 @@ if __name__ == '__main__':
                 'maxSegments': 1
             },
             headers={ 'Content-Type': 'application/json' },
-            json=docs
+            json=docs,
+            auth=auth
         )    
 
         if response.status_code != 200:
@@ -425,7 +441,8 @@ if __name__ == '__main__':
 
         dir_name = os.path.join(DATA_BACKUP_PATH, dir_name)
         if not os.path.isdir(dir_name):
-            raise FileNotFoundError
+            print(f'\n\tERROR: Backup directory {dir_name} not found.')
+            exit(1)
         
         for d in os.listdir(dir_name):
             print(f'\t{d}')
