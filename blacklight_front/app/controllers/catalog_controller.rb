@@ -108,9 +108,20 @@ class CatalogController < ApplicationController
     config.add_facet_field 'item_production_context', label: 'Production Context', sort: 'alpha', limit: 10
     config.add_facet_field 'item_genre', label: 'Genre', sort: 'alpha', limit: 10
     # config.add_facet_field 'collection_source_collection', label: 'Collection'
-    config.add_facet_field 'Production_Date', label: 'Production Date',sort: 'index', limit: 10
-    config.add_facet_field 'Publication_Date', label: 'Publication Date',sort: 'index', limit: 10
-    config.add_facet_field 'Performance_Date', label: 'Performance Date',sort: 'index', limit: 10
+    DECADE_CONFIG = {
+      segments: [1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020],
+      maxlength: 4,
+      textual_facets_collapsible: false,
+      chart_segment_border_color: "rgba(120, 60, 48, 0.6)",
+      chart_segment_bg_color: "rgba(156, 79, 62, 0.65)",
+      assumed_boundaries: [1920, Time.now.year + 2],  # Optional: helps with empty ranges
+    }.freeze
+    
+    %w[Production_Date Publication_Date Performance_Date].each do |field|
+      config.add_facet_field field,
+        label: field.gsub('_', ' '),
+        range: DECADE_CONFIG
+    end
     config.add_facet_field 'material_designations', label: 'Material Designation', sort: 'alpha', limit: 10
     # config.add_facet_field 'physical_composition', label: 'Physical Composition'
     config.add_facet_field 'recording_type', label: 'Recording Type', sort: 'alpha', limit: 10
@@ -154,8 +165,8 @@ class CatalogController < ApplicationController
     # config.add_index_field 'subseries_description', label: 'Sub Series Description'
 
     config.add_index_field 'performer_name', label: 'Performers',link_to_facet: 'contributors_names'
-    config.add_index_field 'creator_names', label: 'Creators',link_to_facet: 'creator_names'
-    config.add_index_field 'contributors_names', label: 'Contributors',link_to_facet: 'contributors_names'
+    config.add_index_field 'creator_names', helper_method: :format_creators_with_roles
+    config.add_index_field 'contributors_names', helper_method: :format_contributors_with_roles
     config.add_index_field 'item_genre', label: 'Genre'
     config.add_index_field 'Production_Date', label: 'Production Date'
     config.add_index_field 'Publication_Date', label: 'Publication Date'
