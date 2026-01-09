@@ -12,11 +12,6 @@
  *
  *= require_tree .
  *= require_self
- 
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
 */
 .bg-dark {
     background-color: #4B4B4B !important;
@@ -25,12 +20,7 @@
     font-weight: 400;
     font-size: 18px;
     line-height: 110%;
-    /* identical to box height, or 20px 
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
+    /* identical to box height, or 20px */
 
 
     color: #FFFFFF;
@@ -65,12 +55,7 @@ input:focus {
     font-weight: 700;
     font-size: 25px;
     line-height: 110%;
-    /* or 44px 
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
+    /* or 44px */
 
     text-align: center;
     letter-spacing: -0.02em;
@@ -140,83 +125,23 @@ input:focus {
 
 
 /*.facet-limit{
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*    box-sizing: border-box;
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*    position: absolute;
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*    width: 287px;
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*    height: 47px;
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*    left: 10px;
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*    !*top: 115px;*!
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*    background: #FFFFFF;
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*    border: 2px solid #000000;
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*    border-radius: 23.5px;
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*}
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
+    box-sizing: border-box;
+    position: absolute;
+    width: 287px;
+    height: 47px;
+    left: 10px;
+    !*top: 115px;*!
+    background: #FFFFFF;
+    border: 2px solid #000000;
+    border-radius: 23.5px;
+}*/
 h1{
     font-family: Futura, "Trebuchet MS", Arial, sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 32px;
     line-height: 110%;
-    /* or 35px 
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
+    /* or 35px */
 
     letter-spacing: -0.02em;
 
@@ -260,12 +185,7 @@ h1{
         box-sizing: border-box;
 
 
-        /*top: 115px;
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
+        /*top: 115px;*/
         background:#FFFFFF;
         border: 2px solid #000000;
         border-radius: 23.5px;
@@ -274,42 +194,12 @@ h1{
     border-color:#9C4F3E !important;
 }
 /*.blacklight-item_genre{
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*    top: 175px;
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*}
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
+    top: 175px;
+}*/
 
 /*.blacklight-source_collection_label{
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*    top: 235px;
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
-/*}
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *
-*/
+    top: 235px;
+}*/
 
 
 .search-field,.advanced, .card, .btn, .input-group, .row{
@@ -318,4 +208,3 @@ font-family: Futura, "Trebuchet MS", Arial, sans-serif;
 #facets{
 font-family: Futura, "Trebuchet MS", Arial, sans-serif;
 }
-

@@ -2,10 +2,10 @@
 class SearchBuilder < Blacklight::SearchBuilder
   include Blacklight::Solr::SearchBuilderBehavior
   include BlacklightAdvancedSearch::AdvancedSearchBuilder
+  include BlacklightRangeLimit::RangeLimitBuilder
   self.default_processor_chain += [:add_advanced_parse_q_to_solr, :add_advanced_search_to_solr]
-#  include BlacklightRangeLimit::RangeLimitBuilder
 
-self.default_processor_chain += [:add_creator_names_qf, :restrict_id_field, :add_production_date_query]
+  self.default_processor_chain += [:add_creator_names_qf, :restrict_id_field, :add_production_date_query]
 # Define the custom processor method to add 'creator_names' to the qf parameter if it's present in the request
 def add_creator_names_qf(solr_parameters)
   solr_parameters[:qf] = 'creator_names' if blacklight_params[:creator_names].present?
