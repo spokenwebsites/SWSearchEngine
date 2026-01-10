@@ -25,7 +25,7 @@ COPY Gemfile Gemfile.lock ./
 ENV RAILS_ENV=development
 
 # Install bundler and gems
-RUN gem install bundler -v 2.4.22 && \
+RUN gem install bundler -v 2.4.12 && \
     bundle config set --local without '' && \
     bundle install
 
