@@ -1,4 +1,19 @@
 services:
+  postgres:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_USER: ${DB_USER:-swrails}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set in .env}
+      POSTGRES_DB: ${DB_NAME:-swrails_production}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-swrails}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
   solr:
     build:
       context: ./solr_backend
@@ -7,20 +22,35 @@ services:
       - 8983:8983
     post_start:
       - command: ["sh", "./post_start.sh"]
-      # - command: ["solr", "create_core", "-c", "swallow2", "-d", "/custom-conf/"]
-    # command: ["bash"]
-    # This healthcheck will only work for dev setup
-    # In production, use environement variables instead.
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:8983/solr/swallow2/admin/ping"]
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 40s
-    # backups path
     volumes:
       - ./solr_backend/data:/var/solr/data
-      
+
+  blacklight:
+    build:
+      context: ./blacklight_front
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      RAILS_ENV: production
+      DATABASE_URL: postgresql://${DB_USER:-swrails}:${DB_PASSWORD:?DB_PASSWORD must be set in .env}@postgres:5432/${DB_NAME:-swrails_production}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:?SECRET_KEY_BASE must be set in .env}
+      DB_HOST: postgres
+      DB_USER: ${DB_USER:-swrails}
+      DB_PORT: "5432"
+      DB_NAME: ${DB_NAME:-swrails_production}
+      SOLR_URL: ${SOLR_URL:-http://solr:8983/solr/swallow2}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   etl:
     build:
       context: ./etl
@@ -33,12 +63,5 @@ services:
       - solr
       - blacklight
 
-  blacklight:
-    build:
-      context: ./blacklight_front
-      dockerfile: ./Dockerfile
-    # depends_on:
-    #   - solr
-    #   - etl
-    ports:
-      - 3000:3000
+volumes:
+  postgres_data:

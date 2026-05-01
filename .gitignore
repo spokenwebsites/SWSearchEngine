@@ -19,6 +19,7 @@ blacklight_front/log/*
 /blacklight_front/tmp/cache/B47/CE0/*
 /blacklight_front/tmp/cache/bootsnap/compile-cache-iseq/*
 /blacklight_front/tmp/cache/bootsnap/compile-cache-yaml/*
+/blacklight_front/tmp/cache/bootsnap/load-path-cache
 /blacklight_front/tmp/cache/assets/*
 /blacklight_front/tmp/development_secret.txt
 
@@ -66,6 +67,10 @@ blacklight_front/lib/traject/config.
 
 .env
 .env.production
+# .env.example is intentionally committed — it documents required variables
 #ignore the python virtual enviroment
 etl/fetch/venv/
 /solr_backend/data/*
+*.log
+blacklight_front/test/system/search_interface_test.rb
+docs/*

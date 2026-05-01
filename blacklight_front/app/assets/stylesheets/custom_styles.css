@@ -188,8 +188,10 @@
     padding: 0.745rem 0.75rem !important;
 }
 
-
-
+/* Hide the autocomplete popup if it has no results */
+ul#autocomplete-popup:empty {
+    display: none !important;
+}
 
 .facet-limit-active .card-header {
     background-color:  #9C4F3E !important;

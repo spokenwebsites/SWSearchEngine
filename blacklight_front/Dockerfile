@@ -1,4 +1,4 @@
-FROM ruby:2.7.4-bullseye AS base
+FROM ruby:3.3-trixie AS base
 
 # Install dependencies
 RUN apt-get update && \
@@ -8,9 +8,12 @@ RUN apt-get update && \
         nodejs \
         npm \
         git \
-        mime-support \
+        media-types \
         tzdata \
-        curl  
+        curl \
+        libpq-dev \
+        postgresql-client && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Yarn
 RUN npm install -g yarn
@@ -18,25 +21,26 @@ RUN npm install -g yarn
 # Set working directory
 WORKDIR /sw-rails
 
-# Copy only Gemfiles first to leverage Docker caching
-COPY Gemfile Gemfile.lock ./
+# Copy only Gemfile first to leverage Docker caching
+COPY Gemfile ./
 
-# Set environment early
-ENV RAILS_ENV=development
+# Set environment
+ARG RAILS_ENV=production
+ENV RAILS_ENV=${RAILS_ENV}
 
 # Install bundler and gems
-RUN gem install bundler -v 2.4.12 && \
-    bundle config set --local without '' && \
+RUN gem install bundler && \
+    bundle config set --local without 'development test' && \
     bundle install
 
-RUN rm -f ./app/tmp/pids/server.pid
+COPY . .
 
-COPY . . 
-
-RUN bundle exec rake assets:precompile
+RUN SECRET_KEY_BASE=dummy_for_build bundle exec rake assets:precompile
 
 RUN bundle exec rake app:update:bin
 
-RUN bundle exec rails db:prepare
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-CMD ["bin/rails", "server", "-b", "0.0.0.0"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "-b", "tcp://0.0.0.0:3000", "-e", "production"]
