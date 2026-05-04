@@ -2,9 +2,16 @@
 
 
 dev:
-	docker compose up -d --build solr && \
-	docker compose run --rm --build etl && \
-	docker compose up -d --build blacklight
+	@if [ ! -f .env ]; then \
+		echo "==> .env not found — creating from .env.example"; \
+		cp .env.example .env; \
+		SECRET=$$(openssl rand -hex 64); \
+		sed -i.bak "s|^SECRET_KEY_BASE=.*|SECRET_KEY_BASE=$$SECRET|" .env && rm -f .env.bak; \
+		echo "==> Generated fresh SECRET_KEY_BASE in .env"; \
+		echo "    For production, also update DB_PASSWORD in .env before continuing."; \
+	fi
+	docker compose up -d --build postgres solr blacklight
+	docker compose run --rm --build etl
 
 clean:
 	docker compose down --rmi all --volumes --remove-orphans && \

@@ -41,18 +41,24 @@ To make sure you have the lateste data, run:
 docker compose run --rm etl ./fetch.sh
 ```
 
-3. Setup the environment using Docker Compose and a Makefile
-To setup the whole environment, run:
+3. Start everything with a single command:
+
 ```sh
 make dev
 ```
 
-This will:
-- Setup and run the Solr server
-- Populate the Solr server using Traject
-- Run the Blacklight frontend.
+If `.env` doesn't exist yet, `make dev` creates it from `.env.example` and generates a `SECRET_KEY_BASE` automatically. For **production**, open `.env` before running and set:
 
-4. To clean the environement from containers, volumes and networks, run:
+- **`DB_PASSWORD`** — replace with a strong password
+- **`SECRET_KEY_BASE`** — generate with `openssl rand -hex 64` or `docker run --rm ruby:3.3 bin/rails secret`
+
+> `.env` is gitignored and must never be committed. `.env.example` is the committed reference — update it (without real values) whenever you add a new variable.
+
+`make dev` will:
+- Start PostgreSQL, Solr, and the Blacklight frontend
+- Run Traject to populate Solr with the dataset
+
+5. To clean the environement from containers, volumes and networks, run:
 ```sh
 make clean
 ```
@@ -111,7 +117,8 @@ This removes all docker containers, images, volumes and networks related to this
 
 ## 🧹 Backup workflows
 
-ADD NOTE ON ENV FILES
+> **Environment files:** This project uses two sets of `.env` files — the root `.env` (PostgreSQL + Rails secrets) and `etl/.env.*` (Solr connection settings). See the [Environment files](#environement-files) section below for details on each.
+
 ### Data management (leave core untouched)
 
 You can backup the data, dump it from the core and restore it using the Makfile.

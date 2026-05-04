@@ -35,6 +35,9 @@ services:
     build:
       context: ./blacklight_front
       dockerfile: ./Dockerfile
+      args:
+        SECRET_KEY_BASE: ${SECRET_KEY_BASE:?SECRET_KEY_BASE must be set in .env}
+        DATABASE_URL: postgresql://${DB_USER:-swrails}:${DB_PASSWORD:-build}@localhost/${DB_NAME:-swrails_production}
     ports:
       - 3000:3000
     environment:
@@ -50,6 +53,12 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
 
   etl:
     build:
@@ -60,8 +69,8 @@ services:
       - ./etl/fetch:/etl/fetch
       - ./etl/:/etl/
     depends_on:
-      - solr
-      - blacklight
+      solr:
+        condition: service_healthy
 
 volumes:
   postgres_data:

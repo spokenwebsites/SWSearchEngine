@@ -21,8 +21,8 @@ RUN npm install -g yarn
 # Set working directory
 WORKDIR /sw-rails
 
-# Copy only Gemfile first to leverage Docker caching
-COPY Gemfile ./
+# Copy Gemfile 
+COPY Gemfile Gemfile.lock ./
 
 # Set environment
 ARG RAILS_ENV=production
@@ -35,7 +35,9 @@ RUN gem install bundler && \
 
 COPY . .
 
-RUN SECRET_KEY_BASE=dummy_for_build bundle exec rake assets:precompile
+ARG SECRET_KEY_BASE
+ARG DATABASE_URL=postgresql://build:build@localhost/build
+RUN bundle exec rake assets:precompile
 
 RUN bundle exec rake app:update:bin
 
