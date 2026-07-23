@@ -64,7 +64,8 @@
                 "series_uri": <%= raw (@document['item_series_uri']&.first || "").to_json %>,
                 "sub_series": <%= raw (@document.item_subseries_title || "").to_json %>,
                 "sub_series_description": <%= raw (@document['item_subseries_description']&.first || "").to_json %>,
-                "sub_series_uri": <%= raw (@document['item_subseries_uri']&.first || "").to_json %>
+                "sub_series_uri": <%= raw (@document['item_subseries_uri']&.first || "").to_json %>,
+                "source_collection_item_id": <%= raw (@document['institution_collection_item_id']&.first || "").to_json %>
             },
             "item_description": {
                 "title": <%= raw (@document.item_title || "").to_json %>,
@@ -110,6 +111,7 @@
             'Sub Series Title: ' + (<%= raw (@document.item_subseries_title || "").to_json %> || 'N/A') + '\n' +
             'Sub Series Description: ' + (<%= raw (@document['item_subseries_description']&.first || "").to_json %> || 'N/A') + '\n' +
             'Sub Series URI: ' + (<%= raw (@document['item_subseries_uri']&.first || "").to_json %> || 'N/A') + '\n' +
+            'Source Collection Item ID: ' + (<%= raw (@document['institution_collection_item_id']&.first || "").to_json %> || 'N/A') + '\n' +
             '\n---------------------------------\n' +
             'ITEM DESCRIPTION\n' +
             'Title: ' + (<%= raw (@document.item_title || "").to_json %> || 'N/A') + '\n' +

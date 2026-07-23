@@ -101,9 +101,9 @@ to_field 'persistent_url' do |record, accumulator, _c|
   accumulator.concat [persistent_url]
 end
 
-to_field 'insitution_collection_item_id' do |record, accumulator, _c|
-  insitution_collection_item_id = record.xpath('/item/classification/item/Source_Item_ID').map(&:text).first
-  accumulator.concat [insitution_collection_item_id]
+to_field 'institution_collection_item_id' do |record, accumulator, _c|
+  institution_collection_item_id = record.xpath('/item/Item_Description/source_item_ID').map(&:text).first
+  accumulator.concat [institution_collection_item_id]
 end
 
 # ITEM DESCRIPTION

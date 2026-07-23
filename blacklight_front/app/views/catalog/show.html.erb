@@ -146,6 +146,15 @@
    </div>
    <% end %>
 
+   <% if @document['institution_collection_item_id'].present? %>
+  <div class="row">
+    <dt class="subheading col-md-3">Source Item ID:</dt>
+    <dd class="col-md-9 subheading_values">
+      <%= @document['institution_collection_item_id'].first %>
+    </dd>
+  </div>
+  <% end %>
+
   <hr class="solid-line">
 
   <!--Item Descirption-->
@@ -162,6 +171,7 @@
 %>
 <% if has_item_description_data %>
   <h3 class="separator_head">ITEM DESCRIPTION</h3>
+
   <% if @document.item_title.present? %>
   <div class="row">
     <dt class="subheading col-md-3">Title:</dt>
